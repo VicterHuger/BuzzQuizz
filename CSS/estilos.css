@@ -8,7 +8,7 @@ body{
     flex-direction: column;
     min-height: 100vh;
     width: 100%;
-    justify-content: center;
+    align-items: center;
     font-family: 'Roboto', sans-serif;
     background-color: #FAFAFA   ;
 }
@@ -24,10 +24,13 @@ header{
     width: 100%;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
-header>h1{
+header>h1,button{
     font-size:37px;
     font-weight: 700;
     color:#FFFFFF;
+}
+header>h1:hover,.quizzes-em-branco>buton:hover{
+    cursor:pointer;
 }
 main{
     width: 73%; /*1051px/1440*/
@@ -60,9 +63,29 @@ main{
     background: #FAFAFA;
     border: 1px dashed #EC362D;
     border-radius: 50px;
-    width: 151px; /*MODIFICAR PARA %*/
+    width: 14%;/*151px/1051px*/
     height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.quizzes{
+    display:flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+}
+.quizz{
+    width: 32%;
+    height: auto;
+    display: flex;
+    
+}
+.quizz>img{
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border-radius: 5px;
+
+    object-fit: cover;
 }
