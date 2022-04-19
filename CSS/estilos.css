@@ -46,9 +46,23 @@ main{
     justify-content: space-evenly;
     align-items: center;
 }
-.quizzes-em-branco p{
+.quizzes-em-branco>h3{
     color:#B9B9B9;
     word-wrap: break-word;
     font-size: 20px;
-
+    inline-size: 25%;
+    text-align: center;
+}
+.quizzes-em-branco>buton>h2{
+    color:#EC362D;
+}
+.quizzes-em-branco>buton{
+    background: #FAFAFA;
+    border: 1px dashed #EC362D;
+    border-radius: 50px;
+    width: 151px; /*MODIFICAR PARA %*/
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
