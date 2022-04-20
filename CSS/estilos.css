@@ -121,3 +121,6 @@ main{
    left:0;
    
 }
+.escondido{
+    display: none;
+}
