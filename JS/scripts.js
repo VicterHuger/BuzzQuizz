@@ -15,6 +15,7 @@ let quizzesDisponíveis  = {
 
 function recarregar(){
     window.location.reload();
+    console.log("bora testar")
 
 }
 
