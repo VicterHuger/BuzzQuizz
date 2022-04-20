@@ -5,13 +5,9 @@ const CriarNovoQuizz = document.querySelector(".criar_novo_quizz")
 const PaginaInicial = document.querySelector(".todos-os-quizzes")
 const CarregandoQuizzes = document.querySelector(".carregar-pagina")
 
-let quizzesDisponíveis  = {
-    id:"",
-    title: "",
-    image:"",
-    questions:[],
-    levels:[],
-}
+let quizzesDisponíveis  = [];
+
+//let quizzesNovos = 
 
 function recarregar(){
     window.location.reload();
@@ -39,4 +35,5 @@ function quizzesCarregados(){
         CarregandoQuizzes.classList.remove("quizzCarregando")
     }
 }
+
 
