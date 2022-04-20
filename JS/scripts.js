@@ -5,17 +5,11 @@ const CriarNovoQuizz = document.querySelector(".criar_novo_quizz")
 const PaginaInicial = document.querySelector(".todos-os-quizzes")
 const CarregandoQuizzes = document.querySelector(".carregar-pagina")
 
-let quizzesDisponíveis  = {
-    id:"",
-    title: "",
-    image:"",
-    questions:[],
-    levels:[],
-}
+let quizzesDisponíveis  = [];
 
 function recarregar(){
     window.location.reload();
-
+    console.log("TESTEEEEE");
 }
 
 function carregandoQuizzes(){
