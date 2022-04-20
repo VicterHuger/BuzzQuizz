@@ -9,7 +9,8 @@ let quizzesDisponíveis  = [];
 
 function recarregar(){
     window.location.reload();
-    console.log("TESTEEEEE");
+    console.log("bora testar")
+
 }
 
 function carregandoQuizzes(){
