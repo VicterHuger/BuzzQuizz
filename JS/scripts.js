@@ -77,7 +77,6 @@ function abrirPaginaQuizz(elemento){
 function renderizarQuizz(resposta){
     document.querySelector(".tela-inicial").classList.add("escondido");
     document.querySelector(".tela-quiz").classList.remove("escondido");
-    console.log(resposta.data)
     exibirQuizz(resposta.data);
 }
 
@@ -92,7 +91,6 @@ function embaralha() {
 function exibirQuizz (quizz){
     //const title = paginaQuizz.querySelector(".quiz-title");
     title= quizz.title;
-
     //const banner = paginaQuizz.querySelector(".banner-image");
     bannersrc = quizz.image;
     const telaQuiz=document.querySelector(".tela-quiz");
@@ -103,37 +101,31 @@ function exibirQuizz (quizz){
             <span class = "quiz-title ">${title}</span>
         </div>
     </header>`
-        
-
-    InformacaoDoQuiz.levels = quizz.levels;
+    //InformacaoDoQuiz.levels = quizz.levels;
     const conjuntoQuestoes = `<div class = "quiz-questions"></div>`;
     
     let embaralhaResposta = [];
     
     paginaQuizz.innerHTML += conjuntoQuestoes;
     
-    
+    let id;
     for (let i = 0; i < quizz.questions.length; i++){
         document.querySelector(".quiz-questions").innerHTML += `
         <div class = "quiz-question">
-            <h3>${quizz.questions[i].title}</h3>
-            <ul class = "opcoes-respostas" id = "${i}">
+            <h3 style = "background-color:${quizz.questions[i].color}">${quizz.questions[i].title}</h3>
+            <ul class = "opcoes-respostas" id = "pergunta ${i+1}">
             </ul>
         </div>`
         
         embaralhaResposta = quizz.questions[i].answers.sort(embaralha);
-        
         for (let j = 0; j < embaralhaResposta.length; j++){
-            
-            document.getElementById(`${i}`).innerHTML +=
-                `<li class = "opcao" id = "${embaralhaResposta[j].isCorretAnswers}" onclick = "escolherResposta(this)">
-                    <img scr = "${embaralhaResposta[j].image}" alt = "Option Imagem">
+            document.getElementById(`pergunta ${i+1}`).innerHTML +=
+                `<li class = "opcao" id = "${embaralhaResposta[j].isCorrectAnswer}" onclick = "escolherResposta(this)">
+                    <img src="${embaralhaResposta[j].image}" alt="Option Imagem"/>
                     <span>${embaralhaResposta[j].text}</span>                  
-                </li>`
-               console.log(embaralhaResposta[j].image)
+                </li>`;        
         }
         
-
         /*if (quizz.questions[i].color.toLowerCase() === "#ffffff"){
             question.innerHTML +=
             `<div class = "question">
