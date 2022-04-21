@@ -99,6 +99,26 @@ function exibirQuizz (quizz){
             <span class = "quiz-title ">${title}</span>
         </div>
     </header>`
+    telaQuiz.innerHTML+=`<section class="quiz-questions">
+    <section class = "quiz-question">
+        <h3>PERGUNTA PARA VOCE CARO LEITOR, BELEZA? </h3>
+        <ul class="opcoes-respostas">
+            <li class="resposta">
+
+            </li>
+            <li class="resposta">
+                
+            </li>
+            <li class="resposta">
+                
+            </li>
+            <li class="resposta">
+                
+            </li>
+        </ul>
+    </section>
+</section>
+<section class = "quiz-results"></section>`
     return; //tirar Return para continuar
 
     const questions = paginaInicial.querySelector(".quizz-questions");
