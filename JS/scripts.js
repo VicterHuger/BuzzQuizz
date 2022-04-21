@@ -7,6 +7,12 @@ const CarregandoQuizzes = document.querySelector(".carregar-pagina");
 
 let quizzesDisponiveis  = [];
 
+const InformacaoDoQuiz = {
+    questionsAnswered: 0,
+    levels: [],
+    rightAnswers: 0
+};
+
 carregarTodosQuizzes();
 
 function recarregarPagina(){
@@ -69,5 +75,46 @@ function abrirPaginaQuizz(elemento){
 }
 function abrirQuizz(resposta){
     document.querySelector("main").classList.add("escondido");
+}
 
+function exibirQuizz (){
+    const title = paginaInicial.querySelector(".quiz-title");
+    title.innerText = quizz.data.title;
+
+    const banner = paginaInicial.querySelector(".banner-image");
+    banner.src = quizz.data.image;
+
+    const questions = paginaInicial.querySelector(".quizz-questions");
+    questions.innerHTML = "";
+
+    InformacaoDoQuiz.levels = quizz.data.levels;
+    
+    for (let i = 0; i < quizz.data.question.length; i++){
+        let embaralhaResposta = quizz.data.questions[i].respostas.sort(randomize);
+        let respostas = ""
+        for (let j = 0; j < embaralhaResposta.lengnt; j++){
+            respostas +=
+        `<li class = "opcao" onclick = "escolherResposta(this)">
+            <img scr = "${embaralhaResposta[j].image}" alt = "Option Imagem">
+            <span>${embaralhaResposta[j].text}</span>
+            <span class = "valor escondido">${embaralhaResposta[j].RespostaCorreta}</span>        
+        </li>`
+        }
+        if (quizz.data.questions[i].color.toLowerCase() === "#FFFFFF"){
+            question.innerHTML +=
+            `<div class = "question">
+                <div class = "question-title" style = "background-color:${quizz.data.questions[i].color}">
+                <span>${quizz.data.questions[i].title}</span>
+                </div>
+            </div>`
+        }
+        else {
+            questions.innerHTML += 
+            `<div class = "question">
+                <div class = "question-title" stlyle = "background-color:${quizz.data.question[i].color}"
+                </div>
+            </div>`
+        }
+    }
+    zerarQuizz();
 }
