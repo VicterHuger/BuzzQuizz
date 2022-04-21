@@ -136,4 +136,19 @@ function exibirQuizz (quizz){
     }
     //zerarQuizz();
 }
+function escolherResposta(element){
+    
+    const respostas = element.parentNode.querySelectorAll("li");
+
+    for(let i = 0; i < respostas.length; i++){
+        respostas[i].removeEventListener('click', function () {return true} );
+    }
+    
+
+        
+
+    
+
+
+}
 
