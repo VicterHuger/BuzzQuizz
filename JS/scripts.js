@@ -2,7 +2,8 @@ const APPI_URL = "https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes";
 
 const JogarNovoQuizz = document.querySelector(".pagina_quizz");
 const CriarNovoQuizz = document.querySelector(".criar_novo_quizz");
-const paginaInicial = document.querySelector(".todos-os-quizzes");
+const paginaQuizz = document.querySelector(".tela-quiz");
+
 const CarregandoQuizzes = document.querySelector(".carregar-pagina");
 
 let quizzesDisponiveis  = [];
@@ -84,12 +85,15 @@ function tratarErroAbrirQuizz(erro){
     alert(`Erro ao abri o quizz selecionado: Erro número ${erro.response.status}`);
     recarregarPagina();
 }
+function embaralha() {
+    return Math.random() -0.5;
+}
 
 function exibirQuizz (quizz){
-    //const title = paginaInicial.querySelector(".quiz-title");
+    //const title = paginaQuizz.querySelector(".quiz-title");
     title= quizz.title;
 
-    //const banner = paginaInicial.querySelector(".banner-image");
+    //const banner = paginaQuizz.querySelector(".banner-image");
     bannersrc = quizz.image;
     const telaQuiz=document.querySelector(".tela-quiz");
     telaQuiz.innerHTML=`
@@ -99,61 +103,51 @@ function exibirQuizz (quizz){
             <span class = "quiz-title ">${title}</span>
         </div>
     </header>`
-    telaQuiz.innerHTML+=`<section class="quiz-questions">
-    <section class = "quiz-question">
-        <h3>PERGUNTA PARA VOCE CARO LEITOR, BELEZA? </h3>
-        <ul class="opcoes-respostas">
-            <li class="resposta">
-
-            </li>
-            <li class="resposta">
-                
-            </li>
-            <li class="resposta">
-                
-            </li>
-            <li class="resposta">
-                
-            </li>
-        </ul>
-    </section>
-</section>
-<section class = "quiz-results"></section>`
-    return; //tirar Return para continuar
-
-    const questions = paginaInicial.querySelector(".quizz-questions");
-    questions.innerHTML = "";
+        
 
     InformacaoDoQuiz.levels = quizz.levels;
-    let embaralhaResposta;
-    let respostas="";
-    let question="";
-    for (let i = 0; i < quizz.question.length; i++){
-        respostas = "";
-        embaralhaResposta = quizz.questions[i].respostas.sort(randomize);
-        for (let j = 0; j < embaralhaResposta.lengnt; j++){
-            respostas +=
-        `<li class = "opcao" onclick = "escolherResposta(this)">
-            <img scr = "${embaralhaResposta[j].image}" alt = "Option Imagem">
-            <span>${embaralhaResposta[j].text}</span>
-            <span class = "valor escondido">${embaralhaResposta[j].RespostaCorreta}</span>        
-        </li>`
+    const conjuntoQuestoes = `<div class = "quiz-questions"></div>`;
+    
+    let embaralhaResposta = [];
+    
+    paginaQuizz.innerHTML += conjuntoQuestoes;
+    
+    
+    for (let i = 0; i < quizz.questions.length; i++){
+        document.querySelector(".quiz-questions").innerHTML += `
+        <div class = "quiz-question">
+            <h3>${quizz.questions[i].title}</h3>
+            <ul class = "opcoes-respostas" id = "${i}">
+            </ul>
+        </div>`
+        
+        embaralhaResposta = quizz.questions[i].answers.sort(embaralha);
+        
+        for (let j = 0; j < embaralhaResposta.length; j++){
+            
+            document.getElementById(`${i}`).innerHTML +=
+                `<li class = "opcao" id = "${embaralhaResposta[j].isCorretAnswers}" onclick = "escolherResposta(this)">
+                    <img scr = "${embaralhaResposta[j].image}" alt = "Option Imagem">
+                    <span>${embaralhaResposta[j].text}</span>                  
+                </li>`
+               console.log(embaralhaResposta[j].image)
         }
-        if (quizz.questions[i].color.toLowerCase() === "#ffffff"){
+        
+
+        /*if (quizz.questions[i].color.toLowerCase() === "#ffffff"){
             question.innerHTML +=
             `<div class = "question">
                 <div class = "question-title" style = "background-color:${quizz.questions[i].color}">
                 <span>${quizz.questions[i].title}</span>
                 </div>
             </div>`
-        }
-        else {
-            questions.innerHTML += 
+        }else {
+            question.innerHTML += 
             `<div class = "question">
                 <div class = "question-title" stlyle = "background-color:${quizz.question[i].color}"
                 </div>
             </div>`
-        }
+         }*/
     }
-    zerarQuizz();
+    //zerarQuizz();
 }
