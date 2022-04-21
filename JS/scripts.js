@@ -35,7 +35,7 @@ function quizzesCarregados(){
 }
 
 function carregarTodosQuizzes(){
-    promise=axios.get(APPI_URL);
+    const promise=axios.get(APPI_URL);
     promise.then(renderizarQuizzes);
     promise.catch(tratarErroCarregarQuizzes);
 }
@@ -62,5 +62,12 @@ function tratarErroCarregarQuizzes(erro){
 }
 
 function abrirPaginaQuizz(elemento){
+    const ID_DO_QUIZZ=elemento.id;
+    const promise=axios.get(`${APPI_URL}/${ID_DO_QUIZZ}`);
+    promise.then(abrirQuizz);
+    promise.catch(TratarErroAbrirQuizz);
+}
+function abrirQuizz(resposta){
     document.querySelector("main").classList.add("escondido");
+
 }
