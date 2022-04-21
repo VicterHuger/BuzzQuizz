@@ -143,3 +143,4 @@ function exibirQuizz (quizz){
     }
     //zerarQuizz();
 }
+
