@@ -16,7 +16,7 @@
     <header>
         <h1 onclick="recarregarPagina()">BuzzQuizz</h1>
     </header>
-    <main class="">
+    <main class="tela-inicial">
         <div class="quizzes-em-branco">
             <h3>Você não criou nenhum quizz ainda :(</h3>
             <buton><h2>Criar quizz</h2></buton>
@@ -24,18 +24,39 @@
         <div class="todos-os-quizzes">
             <h3>Todos os quizzes</h3>
             <div class="quizzes">
-                <header class = "quiz-banner">
-                    <img class = "banner-image" scr = "">
-                    <span class = "quiz-title"></span>
-                </header>
-                <section class = "quiz-questions"></section>
-                <section class = "quiz-results"></section>
             </div>
         </div>
         <div class="carregar-pagina escondido">
             Carregando....
         </div>
     </main>
+    <main class="tela-quiz escondido" >
+        
+        <section class="quiz-questions">
+            <section class = "quiz-question">
+                <h3>PERGUNTA PARA VOCE CARO LEITOR, BELEZA? </h3>
+                <div class="opcoes-respostas">
+                    <div class="resposta">
+    
+                    </div>
+                    <div class="resposta">
+                        
+                    </div>
+                    <div class="resposta">
+                        
+                    </div>
+                    <div class="resposta">
+                        
+                    </div>
+                </div>
+            </section>
+        </section>
+        <section class = "quiz-results"></section>
+    </main>
+
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/JS/scripts.js"></script>
 </body>

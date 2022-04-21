@@ -70,28 +70,47 @@ function tratarErroCarregarQuizzes(erro){
 function abrirPaginaQuizz(elemento){
     const ID_DO_QUIZZ=elemento.id;
     const promise=axios.get(`${APPI_URL}/${ID_DO_QUIZZ}`);
-    promise.then(abrirQuizz);
-    promise.catch(TratarErroAbrirQuizz);
+    promise.then(renderizarQuizz);
+    promise.catch(tratarErroAbrirQuizz);
 }
-function abrirQuizz(resposta){
-    document.querySelector("main").classList.add("escondido");
+function renderizarQuizz(resposta){
+    document.querySelector(".tela-inicial").classList.add("escondido");
+    document.querySelector(".tela-quiz").classList.remove("escondido");
+    console.log(resposta.data)
+    exibirQuizz(resposta.data);
 }
 
-function exibirQuizz (){
-    const title = paginaInicial.querySelector(".quiz-title");
-    title.innerText = quizz.data.title;
+function tratarErroAbrirQuizz(erro){
+    alert(`Erro ao abri o quizz selecionado: Erro número ${erro.response.status}`);
+    recarregarPagina();
+}
 
-    const banner = paginaInicial.querySelector(".banner-image");
-    banner.src = quizz.data.image;
+function exibirQuizz (quizz){
+    //const title = paginaInicial.querySelector(".quiz-title");
+    title= quizz.title;
+
+    //const banner = paginaInicial.querySelector(".banner-image");
+    bannersrc = quizz.image;
+    const telaQuiz=document.querySelector(".tela-quiz");
+    telaQuiz.innerHTML=`
+    <header class = "quiz-banner">
+        <img class = "banner-image" src="${bannersrc}">
+        <div class="efeito-gradiente-banner">
+            <span class = "quiz-title ">${title}</span>
+        </div>
+    </header>`
+    return; //tirar Return para continuar
 
     const questions = paginaInicial.querySelector(".quizz-questions");
     questions.innerHTML = "";
 
-    InformacaoDoQuiz.levels = quizz.data.levels;
-    
-    for (let i = 0; i < quizz.data.question.length; i++){
-        let embaralhaResposta = quizz.data.questions[i].respostas.sort(randomize);
-        let respostas = ""
+    InformacaoDoQuiz.levels = quizz.levels;
+    let embaralhaResposta;
+    let respostas="";
+    let question="";
+    for (let i = 0; i < quizz.question.length; i++){
+        respostas = "";
+        embaralhaResposta = quizz.questions[i].respostas.sort(randomize);
         for (let j = 0; j < embaralhaResposta.lengnt; j++){
             respostas +=
         `<li class = "opcao" onclick = "escolherResposta(this)">
@@ -100,18 +119,18 @@ function exibirQuizz (){
             <span class = "valor escondido">${embaralhaResposta[j].RespostaCorreta}</span>        
         </li>`
         }
-        if (quizz.data.questions[i].color.toLowerCase() === "#FFFFFF"){
+        if (quizz.questions[i].color.toLowerCase() === "#ffffff"){
             question.innerHTML +=
             `<div class = "question">
-                <div class = "question-title" style = "background-color:${quizz.data.questions[i].color}">
-                <span>${quizz.data.questions[i].title}</span>
+                <div class = "question-title" style = "background-color:${quizz.questions[i].color}">
+                <span>${quizz.questions[i].title}</span>
                 </div>
             </div>`
         }
         else {
             questions.innerHTML += 
             `<div class = "question">
-                <div class = "question-title" stlyle = "background-color:${quizz.data.question[i].color}"
+                <div class = "question-title" stlyle = "background-color:${quizz.question[i].color}"
                 </div>
             </div>`
         }
