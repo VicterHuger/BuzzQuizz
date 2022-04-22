@@ -100,9 +100,8 @@ function exibirQuizz (quizz){
             <span class = "quiz-title ">${title}</span>
         </div>
     </header>`
-    const conjuntoQuestoes = `<div class = "quiz-questions"></div>`;
     let embaralhaResposta = [];
-    paginaQuizz.innerHTML += conjuntoQuestoes;
+    paginaQuizz.innerHTML += `<div class = "quiz-questions"></div>`;
     let id;
     for (let i = 0; i < quizz.questions.length; i++){
         document.querySelector(".quiz-questions").innerHTML += `
@@ -144,10 +143,52 @@ function escolherResposta(element){
         setTimeout(function (){
             document.getElementById(`pergunta ${numIdElement+1}`).parentNode.parentNode.scrollIntoView();
     },2000)
-    }else{
-        console.log("CHAMAR AQUI A FUNÇÃO PARA VERIFICAR QUANTOS ACERTOS A PESSOA TEVE");
     }
+    finalizarQuizz();
 }
 function pegarNumeroIdUl(str){
     return  Number(str.replace("pergunta ",""));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function finalizarQuizz(){
+    const elementosRespostas=document.querySelectorAll("li>span");
+    const ElementosCertos=Array.from(elementosRespostas).filter(elemento=>elemento.style.color==="rgb(0, 156, 34)");
+    const numElementosCertos=ElementosCertos.length;
+    const numPerguntas=document.querySelectorAll("ul").length;
+    if(numElementosCertos===numPerguntas){
+        paginaQuizz.innerHTML+=`<div></div>`
+    }
+    paginaQuizz.innerHTML=``;
+    exibirQuizz(quizz);
+
 }
