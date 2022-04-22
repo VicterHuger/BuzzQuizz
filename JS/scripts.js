@@ -11,7 +11,6 @@ let quizzesDisponiveis  = [];
 
 const InformacaoDoQuiz = {
     questionsAnswered: 0,
-    levels: [],
     rightAnswers: 0
 };
 
@@ -127,6 +126,7 @@ function exibirQuizz (quizz){
         document.getElementById(`pergunta ${1}`).parentNode.parentNode.scrollIntoView();
 },2000)
 }
+
 function escolherResposta(element){
     const respostas = element.parentNode.querySelectorAll("li");
     const qntRespostas=respostas.length;
@@ -135,11 +135,12 @@ function escolherResposta(element){
         respostas[i].removeAttribute("onclick");
         if(respostas[i].id==="true"){
             respostas[i].querySelector("span").style.color="#009C22";
-            
+            if(element.querySelector("span")===respostas[i].querySelector("span")){
+                InformacaoDoQuiz.rightAnswers++;
+            }
         }else{
             respostas[i].querySelector("span").style.color="#FF4B4B";
             respostas[i].classList.add("efeito-esbranquicado");
-            
         }
     }
     const idElement=element.parentNode.id;
@@ -158,32 +159,42 @@ function pegarNumeroIdUl(str){
 
 function finalizarQuizz(){
     const elementosRespostas=document.querySelectorAll("li>span");
-    const ElementosCertos=Array.from(elementosRespostas).filter(elemento=>elemento.style.color==="rgb(0, 156, 34)");
-    const numElementosCertos=ElementosCertos.length;
-    const numPerguntas=document.querySelectorAll("ul").length;
-    if(numElementosCertos===numPerguntas){
-        paginaQuizz.innerHTML+=`<div></div>`
+    InformacaoDoQuiz.questionsAnswered=Array.from(elementosRespostas).filter(elemento=>elemento.style.color==="rgb(0, 156, 34)").length;
+    const numPerguntas=document.querySelectorAll(".quiz-question>ul").length;
+    if(InformacaoDoQuiz.questionsAnswered===numPerguntas){
+        mostrarResultado();
     }
 }
 
 function zerarQuizz (){
     paginaQuizz.innerHTML = "";
     exibirQuizz(dadosQuizz);
+    InformacaoDoQuiz.questionsAnswered =0;
+    InformacaoDoQuiz.rightAnswers=0;
 }
 
-function mostrarResultado(numeroDeQuestoes){
-    const score = Math.round((InformacaoDoQuiz.rightAnswers/numeroDeQuestoes)*100);
+function mostrarResultado(){
+     const score = Math.round((InformacaoDoQuiz.rightAnswers/InformacaoDoQuiz.questionsAnswered)*100);
+     console.log(score);
+     let level = 0;
 
-    let level = 0;
-
-    for (let i = 0; i< InformacaoDoQuiz.levels.length; i++){
-        if(score >= InformacaoDoQuiz.levels[i].minValue){
+    for (let i = 0; i< dadosQuizz.levels.length; i++){
+        if(score >= dadosQuizz.levels[i].minValue){
             level = i;
         }
-    }
-    const resultado = InformacaoDoQuiz.querySelector(".resuldado")
-
-    resultado.innerHTML = `        `
-
+     }
+    paginaQuizz.innerHTML+=
+    `<div>
+        <section class = "quiz-results">
+            <h3>${score}% de acerto: ${dadosQuizz.levels[level].title}</h3>
+            <div>
+                <img src="${dadosQuizz.levels[level].image}"/>
+                <p>${dadosQuizz.levels[level].text}</p>
+            </div>
+        </section>
+    </div>`;
+    setTimeout(function (){
+        document.querySelector(".quiz-results").parentNode.scrollIntoView();
+    },2000);
     
 }
