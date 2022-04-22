@@ -81,7 +81,6 @@ function renderizarQuizz(resposta){
     dadosQuizz = resposta.data;
     exibirQuizz(resposta.data);
 }
-
 function tratarErroAbrirQuizz(erro){
     alert(`Erro ao abri o quizz selecionado: Erro número ${erro.response.status}`);
     recarregarPagina();
@@ -89,7 +88,6 @@ function tratarErroAbrirQuizz(erro){
 function embaralha() {
     return Math.random() -0.5;
 }
-
 function exibirQuizz (quizz){
     title= quizz.title;
     bannersrc = quizz.image;
@@ -126,7 +124,6 @@ function exibirQuizz (quizz){
         document.getElementById(`pergunta ${1}`).parentNode.parentNode.scrollIntoView();
 },2000)
 }
-
 function escolherResposta(element){
     const respostas = element.parentNode.querySelectorAll("li");
     const qntRespostas=respostas.length;
@@ -156,7 +153,6 @@ function escolherResposta(element){
 function pegarNumeroIdUl(str){
     return  Number(str.replace("pergunta ",""));
 }
-
 function finalizarQuizz(){
     const elementosRespostas=document.querySelectorAll("li>span");
     InformacaoDoQuiz.questionsAnswered=Array.from(elementosRespostas).filter(elemento=>elemento.style.color==="rgb(0, 156, 34)").length;
@@ -165,14 +161,12 @@ function finalizarQuizz(){
         mostrarResultado();
     }
 }
-
 function zerarQuizz (){
     paginaQuizz.innerHTML = "";
     exibirQuizz(dadosQuizz);
     InformacaoDoQuiz.questionsAnswered =0;
     InformacaoDoQuiz.rightAnswers=0;
 }
-
 function mostrarResultado(){
      const score = Math.round((InformacaoDoQuiz.rightAnswers/InformacaoDoQuiz.questionsAnswered)*100);
      console.log(score);
@@ -196,5 +190,8 @@ function mostrarResultado(){
     setTimeout(function (){
         document.querySelector(".quiz-results").parentNode.scrollIntoView();
     },2000);
-    
+}
+function criarQuizz(){
+    document.querySelector(".tela-inicial").classList.add("escondido");
+    //document.querySelector(".tela-quiz").classList.remove("escondido");
 }
