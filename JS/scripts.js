@@ -17,6 +17,7 @@ const InformacaoDoQuiz = {
 carregarTodosQuizzes();
 
 function recarregarPagina(){
+    window.scrollTo(1,0);
     window.location.reload();
 }
 
@@ -48,7 +49,6 @@ function carregarTodosQuizzes(){
 }
 
 function renderizarQuizzes(resposta){
-    
     quizzesDisponiveis=[resposta.data];
     qntQuizzes=quizzesDisponiveis[0].length;
     const elementoQuizzes=document.querySelector(".quizzes");
@@ -106,49 +106,48 @@ function exibirQuizz (quizz){
     let id;
     for (let i = 0; i < quizz.questions.length; i++){
         document.querySelector(".quiz-questions").innerHTML += `
+        <div>
         <div class = "quiz-question">
-            <h3 style = "background-color:${quizz.questions[i].color}">${quizz.questions[i].title}</h3>
-            <ul class = "opcoes-respostas" id = "pergunta ${i+1}">
-            </ul>
-        </div>`
+        <h3 style = "background-color:${quizz.questions[i].color}">${quizz.questions[i].title}</h3>
+        <ul class = "opcoes-respostas" id = "pergunta ${i+1}">
+        </ul>
+    </div>
+    </div>`
         embaralhaResposta = quizz.questions[i].answers.sort(embaralha);
         for (let j = 0; j < embaralhaResposta.length; j++){
             document.getElementById(`pergunta ${i+1}`).innerHTML +=
                 `<li class = "opcao" id = "${embaralhaResposta[j].isCorrectAnswer}" onclick = "escolherResposta(this)">
                     <img src="${embaralhaResposta[j].image}" alt="Option Imagem"/>
-                    <span>${embaralhaResposta[j].text}</span>                  
+                    <span>${embaralhaResposta[j].text}</span>           
                 </li>`;        
         }
-        /*if (quizz.questions[i].color.toLowerCase() === "#ffffff"){
-            question.innerHTML +=
-            `<div class = "question">
-                <div class = "question-title" style = "background-color:${quizz.questions[i].color}">
-                <span>${quizz.questions[i].title}</span>
-                </div>
-            </div>`
-        }else {
-            question.innerHTML += 
-            `<div class = "question">
-                <div class = "question-title" stlyle = "background-color:${quizz.question[i].color}"
-                </div>
-            </div>`
-         }*/
     }
-    //zerarQuizz();
+    setTimeout(function (){
+        document.getElementById(`pergunta ${1}`).parentNode.parentNode.scrollIntoView();
+},2000)
 }
 function escolherResposta(element){
-    
     const respostas = element.parentNode.querySelectorAll("li");
-
-    for(let i = 0; i < respostas.length; i++){
-        respostas[i].removeEventListener('click', function () {return true} );
+    const qntRespostas=respostas.length;
+    for(let i = 0; i < qntRespostas; i++){
+        respostas[i].removeAttribute("onclick");
+        if(respostas[i].id==="true"){
+            respostas[i].querySelector("span").style.color="#009C22";
+        }else{
+            respostas[i].querySelector("span").style.color="#FF4B4B";
+            respostas[i].classList.add("efeito-esbranquicado");
+        }
     }
-    
-
-        
-
-    
-
-
+    const idElement=element.parentNode.id;
+    const numIdElement=pegarNumeroIdUl(idElement);
+    if(document.getElementById(`pergunta ${numIdElement+1}`)!==null){
+        setTimeout(function (){
+            document.getElementById(`pergunta ${numIdElement+1}`).parentNode.parentNode.scrollIntoView();
+    },2000)
+    }else{
+        console.log("CHAMAR AQUI A FUNÇÃO PARA VERIFICAR QUANTOS ACERTOS A PESSOA TEVE");
+    }
 }
-
+function pegarNumeroIdUl(str){
+    return  Number(str.replace("pergunta ",""));
+}
