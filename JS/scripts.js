@@ -123,7 +123,7 @@ function exibirQuizz (quizz){
         }
     }
     setTimeout(function (){
-        document.getElementById(`pergunta ${1}`).parentNode.parentNode.scrollIntoView();
+        document.getElementById(`pergunta ${1}`).parentNode.parentNode.scrollIntoView( {block: "center"});
 },2000)
 }
 
@@ -147,7 +147,7 @@ function escolherResposta(element){
     const numIdElement=pegarNumeroIdUl(idElement);
     if(document.getElementById(`pergunta ${numIdElement+1}`)!==null){
         setTimeout(function (){
-            document.getElementById(`pergunta ${numIdElement+1}`).parentNode.parentNode.scrollIntoView();
+            document.getElementById(`pergunta ${numIdElement+1}`).parentNode.parentNode.scrollIntoView({ block: "center", behavior: "smooth" });
     },2000)
     
     }
@@ -169,6 +169,7 @@ function finalizarQuizz(){
 function zerarQuizz (){
     paginaQuizz.innerHTML = "";
     exibirQuizz(dadosQuizz);
+    scrollTo(0,0);
     InformacaoDoQuiz.questionsAnswered =0;
     InformacaoDoQuiz.rightAnswers=0;
 }
@@ -192,6 +193,8 @@ function mostrarResultado(){
                 <p>${dadosQuizz.levels[level].text}</p>
             </div>
         </section>
+        <buton class = "voltar-home" onclick = "recarregarPagina()" > Voltar para Home </buton>
+        <buton class = "refazer-quizz" onclick = "zerarQuizz()"> Refazer o Quizz </buton>
     </div>`;
     setTimeout(function (){
         document.querySelector(".quiz-results").parentNode.scrollIntoView();
