@@ -5,6 +5,7 @@ const CriarNovoQuizz = document.querySelector(".criar_novo_quizz");
 const paginaQuizz = document.querySelector(".tela-quiz");
 
 const CarregandoQuizzes = document.querySelector(".carregar-pagina");
+let dadosQuizz;
 
 let quizzesDisponiveis  = [];
 
@@ -78,6 +79,7 @@ function renderizarQuizz(resposta){
     document.querySelector(".tela-inicial").classList.add("escondido");
     document.querySelector(".tela-quiz").classList.remove("escondido");
     document.querySelector("header").scrollIntoView();
+    dadosQuizz = resposta.data;
     exibirQuizz(resposta.data);
 }
 
@@ -130,12 +132,15 @@ function escolherResposta(element){
     const respostas = element.parentNode.querySelectorAll("li");
     const qntRespostas=respostas.length;
     for(let i = 0; i < qntRespostas; i++){
+        
         respostas[i].removeAttribute("onclick");
         if(respostas[i].id==="true"){
             respostas[i].querySelector("span").style.color="#009C22";
+            
         }else{
             respostas[i].querySelector("span").style.color="#FF4B4B";
             respostas[i].classList.add("efeito-esbranquicado");
+            
         }
     }
     const idElement=element.parentNode.id;
@@ -144,10 +149,31 @@ function escolherResposta(element){
         setTimeout(function (){
             document.getElementById(`pergunta ${numIdElement+1}`).parentNode.parentNode.scrollIntoView();
     },2000)
-    }else{
-        console.log("CHAMAR AQUI A FUNÇÃO PARA VERIFICAR QUANTOS ACERTOS A PESSOA TEVE");
+    
     }
 }
 function pegarNumeroIdUl(str){
     return  Number(str.replace("pergunta ",""));
+}
+
+function zerarQuizz (){
+    paginaQuizz.innerHTML = "";
+    exibirQuizz(dadosQuizz);
+}
+
+function mostrarResultado(numeroDeQuestoes){
+    const score = Math.round((InformacaoDoQuiz.rightAnswers/numeroDeQuestoes)*100);
+
+    let level = 0;
+
+    for (let i = 0; i< InformacaoDoQuiz.levels.length; i++){
+        if(score >= InformacaoDoQuiz.levels[i].minValue){
+            level = i;
+        }
+    }
+    const resultado = InformacaoDoQuiz.querySelector(".resuldado")
+
+    resultado.innerHTML = `        `
+
+    
 }
