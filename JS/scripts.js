@@ -9,6 +9,14 @@ let dadosQuizz;
 
 let quizzesDisponiveis  = [];
 
+const quizzesValidos = {
+    id:"",
+    title: "", 
+    image: "", 
+    questions: [],
+    levels: []
+}
+
 const InformacaoDoQuiz = {
     questionsAnswered: 0,
     rightAnswers: 0
@@ -81,6 +89,7 @@ function renderizarQuizz(resposta){
     dadosQuizz = resposta.data;
     exibirQuizz(resposta.data);
 }
+
 function tratarErroAbrirQuizz(erro){
     alert(`Erro ao abri o quizz selecionado: Erro número ${erro.response.status}`);
     recarregarPagina();
@@ -88,6 +97,7 @@ function tratarErroAbrirQuizz(erro){
 function embaralha() {
     return Math.random() -0.5;
 }
+
 function exibirQuizz (quizz){
     title= quizz.title;
     bannersrc = quizz.image;
@@ -121,9 +131,10 @@ function exibirQuizz (quizz){
         }
     }
     setTimeout(function (){
-        document.getElementById(`pergunta ${1}`).parentNode.parentNode.scrollIntoView( {block: "center"});
+        document.getElementById(`pergunta ${1}`).parentNode.scrollIntoView( {block: "center"});
 },2000)
 }
+
 function escolherResposta(element){
     const respostas = element.parentNode.querySelectorAll("li");
     const qntRespostas=respostas.length;
@@ -144,7 +155,7 @@ function escolherResposta(element){
     const numIdElement=pegarNumeroIdUl(idElement);
     if(document.getElementById(`pergunta ${numIdElement+1}`)!==null){
         setTimeout(function (){
-            document.getElementById(`pergunta ${numIdElement+1}`).parentNode.parentNode.scrollIntoView({ block: "center", behavior: "smooth" });
+            document.getElementById(`pergunta ${numIdElement+1}`).parentNode.scrollIntoView({ block: "center", behavior: "smooth" });
     },2000)
     
     }
@@ -153,6 +164,7 @@ function escolherResposta(element){
 function pegarNumeroIdUl(str){
     return  Number(str.replace("pergunta ",""));
 }
+
 function finalizarQuizz(){
     const elementosRespostas=document.querySelectorAll("li>span");
     InformacaoDoQuiz.questionsAnswered=Array.from(elementosRespostas).filter(elemento=>elemento.style.color==="rgb(0, 156, 34)").length;
@@ -161,6 +173,7 @@ function finalizarQuizz(){
         mostrarResultado();
     }
 }
+
 function zerarQuizz (){
     paginaQuizz.innerHTML = "";
     exibirQuizz(dadosQuizz);
@@ -168,6 +181,7 @@ function zerarQuizz (){
     InformacaoDoQuiz.questionsAnswered =0;
     InformacaoDoQuiz.rightAnswers=0;
 }
+
 function mostrarResultado(){
      const score = Math.round((InformacaoDoQuiz.rightAnswers/InformacaoDoQuiz.questionsAnswered)*100);
      console.log(score);
@@ -179,22 +193,54 @@ function mostrarResultado(){
         }
      }
     paginaQuizz.innerHTML+=
-    `<div>
-        <section class = "quiz-results">
+    
+       `<section class = "quiz-results">
             <h3>${score}% de acerto: ${dadosQuizz.levels[level].title}</h3>
             <div>
                 <img src="${dadosQuizz.levels[level].image}"/>
                 <p>${dadosQuizz.levels[level].text}</p>
             </div>
         </section>
+        
         <buton class = "voltar-home" onclick = "recarregarPagina()" > Voltar para Home </buton>
-        <buton class = "refazer-quizz" onclick = "zerarQuizz()"> Refazer o Quizz </buton>
-    </div>`;
+        <buton class = "refazer-quizz" onclick = "zerarQuizz()"> Refazer o Quizz </buton>`
+    ;
     setTimeout(function (){
-        document.querySelector(".quiz-results").parentNode.scrollIntoView();
-    },2000);
+        document.querySelector(".quiz-results").scrollIntoView();
+    },2000);    
 }
+
 function criarQuizz(){
     document.querySelector(".tela-inicial").classList.add("escondido");
     //document.querySelector(".tela-quiz").classList.remove("escondido");
+}
+function inicioDaCriacao(quizzBasico){
+    let questionValue = "";
+
+    let levelsValue = "";
+
+    if(!quizzBasico){
+        quizzesValidos = {
+            id:"",
+            title: "", 
+            image: "", 
+            questions: [],
+            levels: []
+        }
+    }else {
+        quizzesValidos = quizzBasico;
+        questionValue = quizzBasico.questions.length;
+        levelsValue = quizzBasico.levels.length;
+    }
+    const telaCriarQuiz = document.querySelector(".quizz-lista");
+    telaCriarQuiz.classList.add("escondido");
+    CriarNovoQuizz.innerHTML = `
+    <span class = "titulo">Comece pelo começo</span>
+    <div class = "informacoes-basicas">
+        <input type = "text" placeholder = "Título do seu quizz" value = "${quizzesValidos.title}">
+        <input type = "text" placeholder = "URL da imagem do seu quizz" value = "${quizzesValidos.image}">
+        <input type = "number" placeholde = "Quantidade de perguntas no quizz " value = "${questionValue}"
+    </div>
+    <button class = "informacoes-iniciais" onclick = "irParaPerguntas()" >Prosseguir para criar perguntas</button>  
+    `
 }
