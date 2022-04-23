@@ -9,13 +9,13 @@ let dadosQuizz;
 
 let quizzesDisponiveis  = [];
 
-const quizzesValidos = {
+/*const quizzesValidos = {
     id:"",
     title: "", 
     image: "", 
     questions: [],
     levels: []
-}
+}*/
 
 const InformacaoDoQuiz = {
     questionsAnswered: 0,
@@ -210,12 +210,21 @@ function mostrarResultado(){
 
 function criarQuizz(){
     document.querySelector(".tela-inicial").classList.add("escondido");
-    //document.querySelector(".tela-quiz").classList.remove("escondido");
+    document.querySelector(".Tela-de-criar-quizz").classList.remove("escondido");
 }
-function inicioDaCriacao(quizzBasico){
+
+function teste(){
+    let oForm; 
+    let name;
+    oForm = document.forms[0];  
+    
+    name = oForm.elements[0].value;
+    console.log(name);
+}
+/*function inicioDaCriacao(quizzBasico){
     let questionValue = "";
 
-    let levelsValue = "";
+    let numeroDeNiveis = "";
 
     if(!quizzBasico){
         quizzesValidos = {
@@ -227,8 +236,8 @@ function inicioDaCriacao(quizzBasico){
         }
     }else {
         quizzesValidos = quizzBasico;
-        questionValue = quizzBasico.questions.length;
-        levelsValue = quizzBasico.levels.length;
+        numeroDeQuestoes = quizzBasico.questions.length;
+        numeroDeNiveis = quizzBasico.levels.length;
     }
     const telaCriarQuiz = document.querySelector(".quizz-lista");
     telaCriarQuiz.classList.add("escondido");
@@ -237,8 +246,21 @@ function inicioDaCriacao(quizzBasico){
     <div class = "informacoes-basicas">
         <input type = "text" placeholder = "Título do seu quizz" value = "${quizzesValidos.title}">
         <input type = "text" placeholder = "URL da imagem do seu quizz" value = "${quizzesValidos.image}">
-        <input type = "number" placeholde = "Quantidade de perguntas no quizz " value = "${questionValue}"
+        <input type = "number" placeholde = "Quantidade de perguntas no quizz " value = "${numeroDeQuestoes}"
     </div>
     <button class = "informacoes-iniciais" onclick = "irParaPerguntas()" >Prosseguir para criar perguntas</button>  
     `
 }
+function criarPergunta(){
+    CriarNovoQuizz.innerHtml = `
+    <span class = "titulo"> Crie sua perguntas </span>
+    <ul class = "novas-questoes">
+        ${escreverPerguntas()
+    </ul>
+    <button class = "criar-questoes" onclinck = "criarLevels()"> Prosseguir para criar níveis </button>;
+}
+function escreverPerguntas(){
+
+}
+
+*/
