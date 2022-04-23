@@ -286,37 +286,59 @@ opcao>span:first-child, opcao>span:nth-child(2){
     justify-content: center;
     align-items: center;
 }
-input[type=text], select {
+.tela-de-criar-quizz{
+    margin-top: 69px;
     width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-  
-input[type=submit] {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.tela-de-criar-quizz>h3{
+    margin:71px auto 27px auto;
+    font-size: 23px;
+    font-weight: 700;
+    color: #000000;
+    text-align: center;
 }
-  
-input[type=submit]:hover {
-    background-color: #45a049;
+.comece-pelo-comeco{
+    width: 42%;
+    background-color: #FFFFFF;
+    margin: 0 auto 85px auto;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    padding-top: 22px;
 }
-  
-div{
+.comece-pelo-comeco input{
+    height: 46px;
+    margin: 0 auto 9px auto;
+    border: solid 1px #D1D1D1;
     border-radius: 5px;
-    background-color: #f2f2f2;
-    padding: 20px;
+    width: 94%;
+    padding:0 4%;
+    font-size: 19px;
 }
-
+.comece-pelo-comeco>input:last-child{
+    margin-bottom: 22px;
+}
+.comece-pelo-comeco input::placeholder{
+    font-style: italic;
+    font-size: 19px;
+    color:#BABABA;
+    text-align: left;
+}
+.criar-perguntas{
+    width: 26%;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #EC362D;
+    color:#FFF5F4;
+    border-radius: 15px;
+    font-size: 21px;
+    text-align: center; 
+}
 @media (max-width:1100px){
     .tela-inicial{
         width: 91%; /*340px/375*/
@@ -415,5 +437,25 @@ div{
         font-size: 18px;
         color: #818181; 
         margin: 0 auto 66px auto; 
+    }
+    .tela-de-criar-quizz>h3{
+        margin:37px auto 29px auto;
+        font-size: 20px;
+        width: 52%;
+    }
+    .comece-pelo-comeco{
+        width: 100%;
+        margin: 0 auto 29px auto;
+        padding-top: 21px;
+    }
+    .comece-pelo-comeco input{
+        margin: 0 auto 9px auto;
+    }
+    .comece-pelo-comeco>input:last-child{
+        margin-bottom: 24px;
+    }
+    .criar-perguntas{
+        width: 95%;
+        font-size: 18px;
     }
 }

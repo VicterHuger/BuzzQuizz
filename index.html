@@ -31,24 +31,17 @@
         </div>
         
     </main>
-    <div class = "Tela-de-criar-quizz escondido">
-        <form action = "/JS/scripts.js" method="get">
-          <label for="fname">First Name</label>
-          <input type="text" id="fname" name="firstname" placeholder="Your name..">
-      
-          <label for="lname">Last Name</label>
-          <input type="text" id="lname" name="lastname" placeholder="Your last name..">
-      
-          <label for="country">Country</label>
-          <select id="country" name="country">
-            <option value="australia">Australia</option>
-            <option value="canada">Canada</option>
-            <option value="usa">USA</option>
-          </select>
-        
-          <input type="submit" onclick="teste()" value="Submit">
+    <main class = "tela-de-criar-quizz escondido">
+        <h3>Comece pelo começo</h3>
+        <form class="comece-pelo-comeco" action="/" method="get">
+          <input type="text" id="titulo" name="titulo" placeholder="Título do seu quizz" required>
+          <input type="text" id="url" name="url" placeholder="URL da imagem do seu quizz" required>
+          <input type="text" id="perguntas" name="perguntas" placeholder="Quantidade de perguntas do quizz"> 
+          <input type="text" id="niveisquizz" name="niveis" placeholder="Quantidade de níveis do quizz"> 
         </form>
-      </div>
+        <button class="criar-perguntas" onclick="verificarDadosIniciais()">Prosseguir pra criar perguntas</button>
+    </main>
+    <main class="tela-de-gerar-perguntas escondido"></main>
     <main class="tela-quiz escondido" ></main>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/JS/scripts.js"></script>
