@@ -193,21 +193,19 @@ function mostrarResultado(){
         }
      }
     paginaQuizz.innerHTML+=
-    
-       `<section class = "quiz-results">
+    `<section class = "quiz-results">
             <h3>${score}% de acerto: ${dadosQuizz.levels[level].title}</h3>
             <div>
                 <img src="${dadosQuizz.levels[level].image}"/>
                 <p>${dadosQuizz.levels[level].text}</p>
             </div>
         </section>
-        
-        <buton class = "voltar-home" onclick = "recarregarPagina()" > Voltar para Home </buton>
-        <buton class = "refazer-quizz" onclick = "zerarQuizz()"> Refazer o Quizz </buton>`
-    ;
+        <buton class = "refazer-quizz" onclick ="zerarQuizz()">Reiniciar Quizz</buton>
+        <buton class = "voltar-home" onclick = "recarregarPagina()">Voltar pra home</buton>`
+        ;
     setTimeout(function (){
         document.querySelector(".quiz-results").scrollIntoView();
-    },2000);    
+    },2000);
 }
 
 function criarQuizz(){
