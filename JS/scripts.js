@@ -201,55 +201,6 @@ function criarQuizz(){
     document.querySelector(".tela-inicial").classList.add("escondido");
     document.querySelector(".tela-de-criar-quizz").classList.remove("escondido");
 }
-
-/*
-function conferirQuizzUsuário(){
-    const id = JSON.parse(localStorage.getItem("ids"));
-
-    const QuizzOriginal = document.querySelector(".tela-inicial");
-
-    const QuizzQueOUsuarioCriou = document.querySelector(".seus-quizzes");
-
-    if(id !== null && id.length !==0) {
-        let apenasO.ID = [];
-        ids.forEach(e => {apenasO.ID.push(ai não entendi direito.... socorro )})
-        QuizzOriginal.classList.add("escondido");
-        QuizzQueOUsuarioCriou.classList.remove("escondido");
-        QuizzQueOUsuarioCriou.querySelector(".quizzes").innerHTML = "";
-        apenasO.ID.forEach(id => getQuizz(ids, mostrarQuizzdoUsuario));
-
-        /// ai desculpa minha nomenclatura minha cabeça tá girando aqui, mas eu acho que a lógica tá mais ou menos certa, pelo que eu li no Notion //// 
-
-        
-    }
-    if(ids !== null && ids.length === 0){
-        QuizzOriginaç.classList.remove("escondido");
-        QuizzQueOUsuarioCriou.classList.add("escondido");
-} 
-
-
-function mostraQuizzdoUsuario(){
-    const seusQuizzes = document.querySelector(".seus-quizzes .quizzes")
-
-    seusQuizzes.innerHTML = `
-    <div class = "quizz">
-        <div class = "conteudo-quizz" onclick = "pegarQuizz(${response.data.id}, abrirpaginaQuizz)">
-        <img src = ${response.data.image} alt = "$(responde.data.title)">
-            <div class = "nome-do-quizz">
-                ${response.data.title}
-            </div>
-        </div>
-    </div>
-    <div class = "botao-de-editar-quizz">
-        <colocar aqui o ion icon de editar os quizz. não pensei nisso ainda, sorry >        `
-
-} 
-
-
-
-
-/////// ahhh e eu vi alguma coisa sobre deletar o quizz, ainda não sei ao certo como fazer, nem isso que eu escrevi eu sei se tá certo, mas pensei em alguma coisa também ////// 
-*/
 function verificarDadosIniciais(){
     titulo=document.getElementById("titulo").value;
     urlImagemBanner=document.getElementById("url").value;
@@ -471,3 +422,48 @@ function BuscarQuizzdoUsuario (){
         promessaDeBuscaDeQuizzPeloIdsDoUsuario.then(renderizarQuizzesDoUsuario)
     }
 }
+/*
+function conferirQuizzUsuário(){
+    const id = JSON.parse(localStorage.getItem("ids"));
+
+    const QuizzOriginal = document.querySelector(".quizzes-originais");
+
+    const QuizzQueOUsuarioCriou = document.querySelector(".seus-quizzes");
+
+    if(id !== null && id.length !==0) {
+        let apenasO.ID = [];
+        ids.forEach(e => {apenasO.ID.push(ai não entendi direito.... socorro )})
+        QuizzOriginal.classList.add("escondido");
+        QuizzQueOUsuarioCriou.classList.remove("escondido");
+        QuizzQueOUsuarioCriou.querySelector(".quizzes").innerHTML = "";
+        apenasO.ID.forEach(id => getQuizz(ids, mostrarQuizzdoUsuario));
+
+        /// ai desculpa minha nomenclatura minha cabeça tá girando aqui, mas eu acho que a lógica tá mais ou menos certa, pelo que eu li no Notion //// 
+
+        
+    }
+    if(ids !== null && ids.length === 0){
+        QuizzOriginaç.classList.remove("hidden");
+        QuizzQueOUsuarioCriou.classList.add("hidden");
+} 
+
+
+function mostraQuizzdoUsuario(){
+    const seusQuizzes = document.querySelector(".seus-quizzes .quizzes")
+
+    seusQuizzes.innerHTML = `
+    <div class = "quizz">
+        <div class = "conteudo-quizz" onclick = "pegarQuizz(${response.data.id}, abrirpaginaQuizz)">
+        <img src = ${response.data.image} alt = "$(responde.data.title)">
+            <div class = "nome-do-quizz">
+                ${response.data.title}
+            </div>
+        </div>
+    </div>
+    <div class = "botao-de-editar-quizz">
+        <colocar aqui o ion icon de editar os quizz. não pensei nisso ainda, sorry >        `
+
+} 
+
+/////// ahhh e eu vi alguma coisa sobre deletar o quizz, ainda não sei ao certo como fazer, nem isso que eu escrevi eu sei se tá certo, mas pensei em alguma coisa também ////// 
+*/
