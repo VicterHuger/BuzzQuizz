@@ -523,6 +523,55 @@ function criarNiveis(){
     //FALTA ARMAZENAR OS DADOS DAS PERGUNTAS NO OBJETO CORRETO;
     //document.querySelector(".tela-de-gerar-perguntas").innerHTML="";
 }
+function EnviarQuizzesParaOServidor(){
+    let variavelQueEnviaParaoServidor = {
+        title: document.querySelector(".titulo").value,
+        image: document.querySelector(".url-image").value,
+        questions: questions,
+        levels: levels
+
+    }
+     let promessaDeEnviarAoServidor = axios.post('https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes', variavelQueEnviaParaoServidor)
+     promessaDeEnviarAoServidor.then(PaginaFinal)//aqui chama a página do quiz final 
+     promessaDeEnviarAoServidor.cath(MostrarErroAoEnviar) // aqui mostra a fução de erro 
+}
+
+function MostrarErroAoEnviar (resposta){
+    console.log("Houve um erro ao enviar", resposta)
+}
+
+function verificarIdSalvos(){
+    arrayDeIds = localStorage.getItem("idSalvo")
+
+    if (arrayDeIds == null){
+        arrayDeIds = "[]";
+    }
+    arrayDeIds = JSON.parse(arrayDeIds)
+
+    if (arrayDeIds.length > 0 ){
+        document.querySelector(".telaParaCriaroQuiz").classList("escondido");
+        BuscarQuizzdoUsuario();
+    }
+    else {
+        document.querySelector("tela2paraCriaroQuiz").classList.add("escondido");
+    }
+}
+
+function salvarNoNavegador (okRecebiOID){
+    let variaveldoID = 0;
+    variavedoID = okRecebiOID
+
+    arrayDeIds.push(variaveldoID)
+
+    localStorage.setItem("idSalvo", arrayDeIds);
+}
+
+function BuscarQuizzdoUsuario (){
+    for(let i=0; i<arrayDeIds.length; i++){
+        let promessaDeBuscaDeQuizzPeloIdsDoUsuario = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes${arrayDeIds[i]}`)
+        promessaDeBuscaDeQuizzPeloIdsDoUsuario.then(renderizarQuizzesDoUsuario)
+    }
+}
 /*
 function conferirQuizzUsuário(){
     const id = JSON.parse(localStorage.getItem("ids"));
