@@ -213,54 +213,48 @@ function criarQuizz(){
     document.querySelector(".Tela-de-criar-quizz").classList.remove("escondido");
 }
 
-function teste(){
-    let oForm; 
-    let name;
-    oForm = document.forms[0];  
-    
-    name = oForm.elements[0].value;
-    console.log(name);
-}
-/*function inicioDaCriacao(quizzBasico){
-    let questionValue = "";
+/*
+function conferirQuizzUsuário(){
+    const id = JSON.parse(localStorage.getItem("ids"));
 
-    let numeroDeNiveis = "";
+    const QuizzOriginal = document.querySelector(".quizzes-originais");
 
-    if(!quizzBasico){
-        quizzesValidos = {
-            id:"",
-            title: "", 
-            image: "", 
-            questions: [],
-            levels: []
-        }
-    }else {
-        quizzesValidos = quizzBasico;
-        numeroDeQuestoes = quizzBasico.questions.length;
-        numeroDeNiveis = quizzBasico.levels.length;
+    const QuizzQueOUsuarioCriou = document.querySelector(".seus-quizzes");
+
+    if(id !== null && id.length !==0) {
+        let apenasO.ID = [];
+        ids.forEach(e => {apenasO.ID.push(ai não entendi direito.... socorro )})
+        QuizzOriginal.classList.add("escondido");
+        QuizzQueOUsuarioCriou.classList.remove("escondido");
+        QuizzQueOUsuarioCriou.querySelector(".quizzes").innerHTML = "";
+        apenasO.ID.forEach(id => getQuizz(ids, mostrarQuizzdoUsuario));
+
+        /// ai desculpa minha nomenclatura minha cabeça tá girando aqui, mas eu acho que a lógica tá mais ou menos certa, pelo que eu li no Notion //// 
+
+        
     }
-    const telaCriarQuiz = document.querySelector(".quizz-lista");
-    telaCriarQuiz.classList.add("escondido");
-    CriarNovoQuizz.innerHTML = `
-    <span class = "titulo">Comece pelo começo</span>
-    <div class = "informacoes-basicas">
-        <input type = "text" placeholder = "Título do seu quizz" value = "${quizzesValidos.title}">
-        <input type = "text" placeholder = "URL da imagem do seu quizz" value = "${quizzesValidos.image}">
-        <input type = "number" placeholde = "Quantidade de perguntas no quizz " value = "${numeroDeQuestoes}"
+    if(ids !== null && ids.length === 0){
+        QuizzOriginaç.classList.remove("hidden");
+        QuizzQueOUsuarioCriou.classList.add("hidden");
+} 
+
+
+function mostraQuizzdoUsuario(){
+    const seusQuizzes = document.querySelector(".seus-quizzes .quizzes")
+
+    seusQuizzes.innerHTML = `
+    <div class = "quizz">
+        <div class = "conteudo-quizz" onclick = "pegarQuizz(${response.data.id}, abrirpaginaQuizz)">
+        <img src = ${response.data.image} alt = "$(responde.data.title)">
+            <div class = "nome-do-quizz">
+                ${response.data.title}
+            </div>
+        </div>
     </div>
-    <button class = "informacoes-iniciais" onclick = "irParaPerguntas()" >Prosseguir para criar perguntas</button>  
-    `
-}
-function criarPergunta(){
-    CriarNovoQuizz.innerHtml = `
-    <span class = "titulo"> Crie sua perguntas </span>
-    <ul class = "novas-questoes">
-        ${escreverPerguntas()
-    </ul>
-    <button class = "criar-questoes" onclinck = "criarLevels()"> Prosseguir para criar níveis </button>;
-}
-function escreverPerguntas(){
+    <div class = "botao-de-editar-quizz">
+        <colocar aqui o ion icon de editar os quizz. não pensei nisso ainda, sorry >        `
 
-}
+} 
 
+/////// ahhh e eu vi alguma coisa sobre deletar o quizz, ainda não sei ao certo como fazer, nem isso que eu escrevi eu sei se tá certo, mas pensei em alguma coisa também ////// 
 */
