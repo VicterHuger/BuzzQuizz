@@ -7,6 +7,11 @@ const InformacaoDoQuiz = {
     questionsAnswered: 0,
     rightAnswers: 0
 };
+let titulo;
+let urlImagemBanner;
+let numDePerguntas;
+let numeroDeNiveis;
+let respostasIncorretasPreenchidas=[];
 //const JogarNovoQuizz = document.querySelector(".pagina_quizz");
 //const CriarNovoQuizz = document.querySelector(".criar_novo_quizz");
 //const CarregandoQuizzes = document.querySelector(".carregar-pagina");
@@ -119,7 +124,7 @@ function exibirQuizz (quizz){
         }
     }
     setTimeout(function (){
-        document.getElementById(`pergunta ${1}`).parentNode.scrollIntoView( {block: "center"});
+        document.getElementById(`pergunta ${1}`).parentNode.scrollIntoView( {block: "center",behavior: "smooth"});
 },2000)
 }
 function escolherResposta(element){
@@ -168,7 +173,6 @@ function zerarQuizz (){
 }
 function mostrarResultado(){
      const score = Math.round((InformacaoDoQuiz.rightAnswers/InformacaoDoQuiz.questionsAnswered)*100);
-     console.log(score);
      let level = 0;
 
     for (let i = 0; i< dadosQuizz.levels.length; i++){
@@ -177,7 +181,8 @@ function mostrarResultado(){
         }
      }
     paginaQuizz.innerHTML+=
-    `<section class = "quiz-results">
+    `<div>
+        <section class = "quiz-results">
             <h3>${score}% de acerto: ${dadosQuizz.levels[level].title}</h3>
             <div>
                 <img src="${dadosQuizz.levels[level].image}"/>
@@ -185,10 +190,11 @@ function mostrarResultado(){
             </div>
         </section>
         <buton class = "refazer-quizz" onclick ="zerarQuizz()">Reiniciar Quizz</buton>
-        <buton class = "voltar-home" onclick = "recarregarPagina()">Voltar pra home</buton>`
+        <buton class = "voltar-home" onclick = "recarregarPagina()">Voltar pra home</buton>
+    </div>`
         ;
     setTimeout(function (){
-        document.querySelector(".quiz-results").scrollIntoView();
+        document.querySelector(".quiz-results").parentNode.scrollIntoView({ block: "center", behavior: "smooth" });
     },2000);
 }
 function criarQuizz(){
@@ -196,20 +202,22 @@ function criarQuizz(){
     document.querySelector(".tela-de-criar-quizz").classList.remove("escondido");
 }
 function verificarDadosIniciais(){
-    const titulo=document.getElementById("titulo").value;
-    const urlImagem=document.getElementById("url").value;
-    const numDePerguntas=document.getElementById("perguntas").value;
-    const numeroDeNiveis=document.getElementById("niveisquizz").value;
+    titulo=document.getElementById("titulo").value;
+    urlImagemBanner=document.getElementById("url").value;
+    numDePerguntas=document.getElementById("perguntas").value;
+    numeroDeNiveis=document.getElementById("niveisquizz").value;
     document.getElementById("titulo").value="";
     document.getElementById("url").value="";
     document.getElementById("perguntas").value="";
     document.getElementById("niveisquizz").value="";
-    //Título do quizz: deve ter no mínimo 20 e no máximo 65 caracteres
     if(isValidTitle(titulo)){
         return alert("Título inserido é inválido! Digite um titulo com no mínimo 20 caracteres e no máximo 65 caracteres");
     }
-    if(!isValidURL(urlImagem)){
+    if((!isValidURL(urlImagemBanner))){ 
         return alert("URL inserida é inválida! Digite uma URL válida!");
+    }
+    if(!isImgLink(urlImagemBanner)){
+        return alert("URL inserida é inválida! Digite uma URL de uma imagem!")
     }
     if(isNaN(Number(numDePerguntas)) || Number(numDePerguntas)<3){
         return alert("Número de perguntas inválido! Digite um número maior ou igual a 3");
@@ -219,8 +227,19 @@ function verificarDadosIniciais(){
     }
     document.querySelector(".tela-de-criar-quizz").classList.add("escondido");
     document.querySelector(".tela-de-gerar-perguntas").classList.remove("escondido");
-    //IDEIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA A CONTINUAR
-    //ADICIONAR OS ELEMENTOS DO HTML DAS PERGUNTAS A SEREM INSERIDAS AQUI
+    document.querySelector(".tela-de-gerar-perguntas").innerHTML=`
+    <h3>Crie suas perguntas</h3>
+    <form class="forms-perguntas" id="forms-pergunta-1" action="/" method="get"></form>`;
+    document.getElementById("forms-pergunta-1").innerHTML=renderizarForumlarioPerguntas(1);
+    for(let i=1;i<numDePerguntas;i++){
+        document.querySelector(".tela-de-gerar-perguntas").innerHTML+=`
+        <form class="forms-clicavel" id="forms-pergunta-${i+1}" onclick="expandirFormulario(this)" action="/" method="get">
+            <h4>Pergunta ${i+1}</h4>
+            <ion-icon  class="icone-editar" name="create-outline"></ion-icon>
+        </form>`;
+    }
+    document.querySelector(".tela-de-gerar-perguntas").innerHTML+=`<button class="criar-niveis" onclick="verificarPerguntas()">Prosseguir pra criar níveis</button>`;
+
     //DEPOIS COLOCAR O ONCLICK NO BOTÃO DE PROSSEGUIR E USAR PROVAVELMENTE OS QUATRO ELEMENTOS DEFINIDOS COMO GLOBAIS; 
 }
 function isValidTitle(string){
@@ -230,59 +249,127 @@ function isValidURL(string) {
     let resposta = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
     return (resposta !== null)
 };
+function isImgLink(url) {
+    if(typeof url !== 'string') return false;
+    return(url.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gmi) != null);
+}
+function expandirFormulario(elemento){
+    const id=elemento.id;
+    const numId=Number(id.replace("forms-pergunta-",""));
+    document.getElementById(id).classList.remove("forms-clicavel");
+    document.getElementById(id).classList.add("forms-perguntas");
+    document.getElementById(id).innerHTML="";
+    document.getElementById(id).innerHTML=renderizarForumlarioPerguntas(numId);
+    elemento.removeAttribute("onclick");
 
-// function validURL(str) {
-//     let pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-//       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-//       '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-//       '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-//       '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-//       '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-//       console.log(!!pattern.test(str));
-//     return !!pattern.test(str);
-// }
-/*function inicioDaCriacao(quizzBasico){
-    let questionValue = "";
-
-    let numeroDeNiveis=document.getElementById("niveisquizz");
-     = "";
-
-    if(!quizzBasico){
-        quizzesValidos = {
-            id:"",
-            title: "", 
-            image: "", 
-            questions: [],
-            levels: []
-        }
-    }else {
-        quizzesValidos = quizzBasico;
-        numeroDeQuestoes = quizzBasico.questions.length;
-        numeroDeNiveis=document.getElementById("niveisquizz");
-         = quizzBasico.levels.length;
+}
+function verificarPerguntas(){
+    const formsNaoPreenchidos=document.querySelector(".tela-de-gerar-perguntas").querySelectorAll(".forms-clicavel");
+    const elementosTextoPergunta=document.querySelector(".tela-de-gerar-perguntas").querySelectorAll("#texto-da-pergunta");
+    const elementosPerguntasInvalidos=Array.from(elementosTextoPergunta).filter(elemento=>(elemento.value.length<20));
+    const elementosCores=document.querySelector(".tela-de-gerar-perguntas").querySelectorAll("#cor-de-fundo");
+    const elementosCoresSemiValidos=Array.from(elementosCores).filter(elemento=>(elemento.value[0]==="#" && elemento.value.length===7));
+    const elementosUrlImagens=document.querySelector(".tela-de-gerar-perguntas").querySelectorAll(".url");
+    const elementosURLImagensPreenchidos=Array.from(elementosUrlImagens).filter(element=>element.value!=="");
+    const elementosURLImagensValidas=Array.from(elementosURLImagensPreenchidos).filter(element=>isValidURL(element.value)).filter(element=>isImgLink(element.value));
+    const inputsRespostasCertas=document.querySelectorAll("#resposta-correta");
+    const respostasCertasPreenchidas=Array.from(inputsRespostasCertas).filter(element=>element.value!=="");
+    const elementosURLImagensRespostasCorretas=document.querySelector(".tela-de-gerar-perguntas").querySelectorAll("#url-img-correta");
+    const elementosURLImagensRespostasCorretasPreenchidos=Array.from(elementosURLImagensRespostasCorretas).filter(element=>element.value!=="");
+    if(formsNaoPreenchidos.length>0){
+        return alert("Preencha todos as perguntas disponíveis!");
     }
-    const telaCriarQuiz = document.querySelector(".quizz-lista");
-    telaCriarQuiz.classList.add("escondido");
-    CriarNovoQuizz.innerHTML = `
-    <span class = "titulo">Comece pelo começo</span>
-    <div class = "informacoes-basicas">
-        <input type = "text" placeholder = "Título do seu quizz" value = "${quizzesValidos.title}">
-        <input type = "text" placeholder = "URL da imagem do seu quizz" value = "${quizzesValidos.image}">
-        <input type = "number" placeholde = "Quantidade de perguntas no quizz " value = "${numeroDeQuestoes}"
-    </div>
-    <button class = "informacoes-iniciais" onclick = "irParaPerguntas()" >Prosseguir para criar perguntas</button>  
-    `
+    if(elementosPerguntasInvalidos.length>0){
+        return alert("Texto da pergunta inválido! Digite uma pergunta com no mínimo 20 caracteres");
+    }
+    if(elementosCoresSemiValidos.length!==elementosCores.length){
+        return alert("Cor inserida inválida! Digite uma cor em formato hexadecimal");
+    }else{
+        for (let i=0;i<elementosCoresSemiValidos.length;i++){
+            for (let j=1;j<elementosCoresSemiValidos[i].value.length;j++){
+                if(!contemNumeroAF){
+                    return alert("Cor inserida inválida! Digite uma cor em formato hexadecimal");
+                }
+            }
+        }
+    }
+    if(inputsRespostasCertas.length!==respostasCertasPreenchidas.length){
+        return alert("Preencha todos os campos das respostas certas");
+    }
+    if(elementosURLImagensRespostasCorretasPreenchidos.length!==respostasCertasPreenchidas.length){
+        return alert("Preencha todas as URL dos campos de URL imagem correta");
+    }
+    for (let i=0;i<numDePerguntas;i++){
+        if(!verificarRespostasIncorretasVazias(i+1)){
+            return alert(`"Preencha pelo menos uma resposta incorreta na pergunta ${i+1}"`);
+        }
+    }
+    for (let i=0;i<numDePerguntas;i++){
+        if(!verificarURLvazias(i+1)){
+            return alert(`"Preencha ${respostasIncorretasPreenchidas[i]} URL das imagens das respostas incorretas da pergunta ${i+1}"`);
+        }
+    }
+    if(elementosURLImagensPreenchidos.length!==elementosURLImagensValidas.length){
+        return alert("URL inserida é inválida! Digite uma URL de uma imagem!");
+    }
+    criarNiveis();
 }
-function criarPergunta(){
-    CriarNovoQuizz.innerHtml = `
-    <span class = "titulo"> Crie sua perguntas </span>
-    <ul class = "novas-questoes">
-        ${escreverPerguntas()
-    </ul>
-    <button class = "criar-questoes" onclinck = "criarLevels()"> Prosseguir para criar níveis </button>;
+function verificarRespostasIncorretasVazias(numero){
+    const respostasIncorretas=document.getElementById(`forms-pergunta-${numero}`).querySelectorAll("[name='resposta-incorreta']");
+    respostasIncorretasPreenchidas[numero-1]=(Array.from(respostasIncorretas).filter(element=>element.value!=="").length);
+    if(respostasIncorretasPreenchidas[numero-1]===0){
+        return false;
+    }
+    return true;
 }
-function escreverPerguntas(){
+function verificarURLvazias(numero){
+    const urls=document.getElementById(`forms-pergunta-${numero}`).querySelectorAll("[name='url-img']");
+    const urlsPreenchidas=Array.from(urls).filter(element=>element.value!=="");
+    if(urlsPreenchidas.length===0){
+        return false;
+    }else if(urlsPreenchidas.length===respostasIncorretasPreenchidas[numero-1]){
+        return true;
+    }
+    return false;
 }
-*/
 
-  
+function contemNumeroAF(caracter){
+    if(typeof(Number(caracter))==="number"){
+        return true;
+    }
+    if(typeof(caracter)==="string" && (caracter.toLocaleLowerCase()==="a" || caracter.toLocaleLowerCase()==="b" || caracter.toLocaleLowerCase()==="c" || caracter.toLocaleLowerCase()==="d" || caracter.toLocaleLowerCase()==="e" || caracter.toLocaleLowerCase()==="f") ){
+        return true;
+    }
+    return false;
+}
+function renderizarForumlarioPerguntas(numero){
+    return(`
+      <h4>Pergunta ${numero}</h4>
+      <div>
+        <input type="text" id="texto-da-pergunta" name="texto-da-pergunta" placeholder="Texto da pergunta">
+        <input type="text" id="cor-de-fundo" name="cor-de-fundo" placeholder="Cor de fundo da pergunta">
+      </div>
+      <h4>Resposta correta</h4>
+      <div> 
+        <input type="text" id="resposta-correta" name="resposta-correta" placeholder="Resposta correta">
+        <input type="text" class="url" id="url-img-correta" name="url-resposta-correta" placeholder="URL da imagem">
+      </div>
+      <h4>Respostas incorretas</h4>
+      <div>
+        <input type="text" id="resposta-incorreta-1" name="resposta-incorreta" placeholder="Resposta incorreta 1">
+        <input type="text" class="url" id="url-img-1" name="url-img" placeholder="URL da imagem 1">
+     </div>
+     <div>
+        <input type="text" id="resposta-incorreta-2" name="resposta-incorreta" placeholder="Resposta incorreta 2">
+        <input type="text" class="url" id="url-img-2" name="url-img" placeholder="URL da imagem 2">
+     </div>
+     <div>
+        <input type="text" id="resposta-incorreta-3" name="resposta-incorreta" placeholder="Resposta incorreta 3">
+        <input type="text" class="url" id="url-img-3" name="url-img" placeholder="URL da imagem 3">
+     </div>`);
+}
+function criarNiveis(){
+    document.querySelector(".tela-de-gerar-perguntas").classList.add(".escondido");
+    //FALTA ARMAZENAR OS DADOS DAS PERGUNTAS NO OBJETO CORRETO;
+    //document.querySelector(".tela-de-gerar-perguntas").innerHTML="";
+}
