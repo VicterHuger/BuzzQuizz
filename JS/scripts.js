@@ -201,13 +201,12 @@ function criarQuizz(){
     document.querySelector(".tela-inicial").classList.add("escondido");
     document.querySelector(".tela-de-criar-quizz").classList.remove("escondido");
 }
-<<<<<<< HEAD
 
 /*
 function conferirQuizzUsuário(){
     const id = JSON.parse(localStorage.getItem("ids"));
 
-    const QuizzOriginal = document.querySelector(".quizzes-originais");
+    const QuizzOriginal = document.querySelector(".tela-inicial");
 
     const QuizzQueOUsuarioCriou = document.querySelector(".seus-quizzes");
 
@@ -224,8 +223,8 @@ function conferirQuizzUsuário(){
         
     }
     if(ids !== null && ids.length === 0){
-        QuizzOriginaç.classList.remove("hidden");
-        QuizzQueOUsuarioCriou.classList.add("hidden");
+        QuizzOriginaç.classList.remove("escondido");
+        QuizzQueOUsuarioCriou.classList.add("escondido");
 } 
 
 
@@ -246,9 +245,11 @@ function mostraQuizzdoUsuario(){
 
 } 
 
+
+
+
 /////// ahhh e eu vi alguma coisa sobre deletar o quizz, ainda não sei ao certo como fazer, nem isso que eu escrevi eu sei se tá certo, mas pensei em alguma coisa também ////// 
 */
-=======
 function verificarDadosIniciais(){
     titulo=document.getElementById("titulo").value;
     urlImagemBanner=document.getElementById("url").value;
@@ -421,4 +422,52 @@ function criarNiveis(){
     //FALTA ARMAZENAR OS DADOS DAS PERGUNTAS NO OBJETO CORRETO;
     //document.querySelector(".tela-de-gerar-perguntas").innerHTML="";
 }
->>>>>>> 6f46c1befb75a289ffefe25867b61b3f303efb46
+function EnviarQuizzesParaOServidor(){
+    let variavelQueEnviaParaoServidor = {
+        title: document.querySelector(".titulo").value,
+        image: document.querySelector(".url-image").value,
+        questions: questions,
+        levels: levels
+
+    }
+     let promessaDeEnviarAoServidor = axios.post('https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes', variavelQueEnviaParaoServidor)
+     promessaDeEnviarAoServidor.then(PaginaFinal)//aqui chama a página do quiz final 
+     promessaDeEnviarAoServidor.cath(MostrarErroAoEnviar) // aqui mostra a fução de erro 
+}
+
+function MostrarErroAoEnviar (resposta){
+    console.log("Houve um erro ao enviar", resposta)
+}
+
+function verificarIdSalvos(){
+    arrayDeIds = localStorage.getItem("idSalvo")
+
+    if (arrayDeIds == null){
+        arrayDeIds = "[]";
+    }
+    arrayDeIds = JSON.parse(arrayDeIds)
+
+    if (arrayDeIds.length > 0 ){
+        document.querySelector(".telaParaCriaroQuiz").classList("escondido");
+        BuscarQuizzdoUsuario();
+    }
+    else {
+        document.querySelector("tela2paraCriaroQuiz").classList.add("escondido");
+    }
+}
+
+function salvarNoNavegador (okRecebiOID){
+    let variaveldoID = 0;
+    variavedoID = okRecebiOID
+
+    arrayDeIds.push(variaveldoID)
+
+    localStorage.setItem("idSalvo", arrayDeIds);
+}
+
+function BuscarQuizzdoUsuario (){
+    for(let i=0; i<arrayDeIds.length; i++){
+        let promessaDeBuscaDeQuizzPeloIdsDoUsuario = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes${arrayDeIds[i]}`)
+        promessaDeBuscaDeQuizzPeloIdsDoUsuario.then(renderizarQuizzesDoUsuario)
+    }
+}
