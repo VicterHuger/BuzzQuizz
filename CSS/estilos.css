@@ -103,7 +103,7 @@ body>header:first-child>h1:hover,.quizzes-em-branco>button:hover,.quizz:hover,bu
     margin-right: 17px;
 }
 .cabeçalho-seus-quizzes>ion-icon{
-    font-size: 25px;
+    font-size: 30px;
     align-items: center;
     color:#EC362D;
 }
@@ -696,4 +696,89 @@ textarea{
         width: 95%;
         font-size: 18px;
     }
+    .tela-de-gerar-perguntas>h3{
+        margin: 38px auto 29px auto;
+        font-size: 20px;
+    }
+    .forms-perguntas-niveis{
+        width: 100%;
+        padding: 27px 17px;
+    }
+    .tela-de-gerar-perguntas>form:last-child{
+        margin-bottom: 46px;
+    }
+    .forms-clicavel{
+        width: 100%;
+    }
+    .icone-editar{
+        width: 26px;
+        height: 25px;
+    }
+    .tela-de-gerar-perguntas>form:last-child{
+        margin-bottom: 46px;
+    }
+    .criar-niveis{
+        font-size: 18px;
+        width: 87%;
+    }
+    .tela-de-gerar-niveis>h3{
+        margin: 39px auto 28px auto;
+        font-size: 20px;
+    }
+    .tela-de-gerar-perguntas>form:last-child{
+        margin-bottom: 28px;
+    }
+    textarea{
+        min-height:177px;
+        min-height: 250px;
+    }
+    .finalizar-quizz{
+        font-size: 18px;
+        color:#FFF5F4;
+        width: 87%;
+    }
+    .tela-de-sucesso-quizz>h3{
+        margin: 39px auto 29px auto;
+        font-size: 20px;
+    }
+    .finalizacao-quizz-usuario{
+        width: 91%;
+        margin: 0 auto 24px auto;
+        height: 181px;
+        position: relative;
+    }
+    .finalizacao-quizz-usuario .efeito-gradiente-sucesso-quizz>h3{
+        font-size: 19px;
+    }
+    .acessar-quizz{
+        width: 59%;
+        font-size: 18px;
+    }
+     .voltar-home-sucesso-quiz{
+        width: 59%;
+        font-size: 18px;
+    }
+    .cabeçalho-seus-quizzes{
+        margin:0 auto 16px auto;
+        width:100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .cabeçalho-seus-quizzes>h4{
+        font-size: 20px;
+        font-weight: 700;
+    }
+    .quizzes-usuarios-div{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 0px;
+        overflow-x:hidden;
+    }
+    .quizzes-usuarios-div .quizz{
+        margin-right:0;
+    }
 }
+
+
