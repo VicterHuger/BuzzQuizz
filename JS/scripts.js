@@ -295,18 +295,16 @@ function verificarDadosIniciais(){
     document.querySelector(".tela-de-gerar-perguntas").classList.remove("escondido");
     document.querySelector(".tela-de-gerar-perguntas").innerHTML=`
     <h3>Crie suas perguntas</h3>
-    <form class="forms-perguntas" id="forms-pergunta-1" action="/" method="get"></form>`;
+    <form class="forms-perguntas-niveis" id="forms-pergunta-1" action="/" method="get"></form>`;
     document.getElementById("forms-pergunta-1").innerHTML=renderizarForumlarioPerguntas(1);
     for(let i=1;i<numDePerguntas;i++){
         document.querySelector(".tela-de-gerar-perguntas").innerHTML+=`
-        <form class="forms-clicavel" id="forms-pergunta-${i+1}" onclick="expandirFormulario(this)" action="/" method="get">
+        <form class="forms-clicavel" id="forms-pergunta-${i+1}" onclick="expandirFormularioPerguntas(this)" action="/" method="get">
             <h4>Pergunta ${i+1}</h4>
             <ion-icon  class="icone-editar" name="create-outline"></ion-icon>
         </form>`;
     }
     document.querySelector(".tela-de-gerar-perguntas").innerHTML+=`<button class="criar-niveis" onclick="verificarPerguntas()">Prosseguir pra criar níveis</button>`;
-
-    //DEPOIS COLOCAR O ONCLICK NO BOTÃO DE PROSSEGUIR E USAR PROVAVELMENTE OS QUATRO ELEMENTOS DEFINIDOS COMO GLOBAIS; 
 }
 function isValidTitle(string){
     return(typeof(string)!=="string" || string.length<20 || string.length>65);
@@ -319,15 +317,14 @@ function isImgLink(url) {
     if(typeof url !== 'string') return false;
     return(url.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gmi) != null);
 }
-function expandirFormulario(elemento){
+function expandirFormularioPerguntas(elemento){
     const id=elemento.id;
     const numId=Number(id.replace("forms-pergunta-",""));
     document.getElementById(id).classList.remove("forms-clicavel");
-    document.getElementById(id).classList.add("forms-perguntas");
+    document.getElementById(id).classList.add("forms-perguntas-niveis");
     document.getElementById(id).innerHTML="";
     document.getElementById(id).innerHTML=renderizarForumlarioPerguntas(numId);
     elemento.removeAttribute("onclick");
-
 }
 function verificarPerguntas(){
     const formsNaoPreenchidos=document.querySelector(".tela-de-gerar-perguntas").querySelectorAll(".forms-clicavel");
@@ -399,7 +396,6 @@ function verificarURLvazias(numero){
     }
     return false;
 }
-
 function contemNumeroAF(caracter){
     if(typeof(Number(caracter))==="number"){
         return true;
@@ -413,26 +409,26 @@ function renderizarForumlarioPerguntas(numero){
     return(`
       <h4>Pergunta ${numero}</h4>
       <div>
-        <input type="text" id="texto-da-pergunta" name="texto-da-pergunta" placeholder="Texto da pergunta">
-        <input type="text" id="cor-de-fundo" name="cor-de-fundo" placeholder="Cor de fundo da pergunta">
+        <input autocomplete="on" type="text" id="texto-da-pergunta" name="texto-da-pergunta" placeholder="Texto da pergunta">
+        <input autocomplete="on" type="text" id="cor-de-fundo" name="cor-de-fundo" placeholder="Cor de fundo da pergunta">
       </div>
       <h4>Resposta correta</h4>
       <div> 
-        <input type="text" id="resposta-correta" name="resposta-correta" placeholder="Resposta correta">
-        <input type="text" class="url" id="url-img-correta" name="url-resposta-correta" placeholder="URL da imagem">
+        <input autocomplete="on" type="text" id="resposta-correta" name="resposta-correta" placeholder="Resposta correta">
+        <input autocomplete="on" type="text" class="url" id="url-img-correta" name="url-resposta-correta" placeholder="URL da imagem">
       </div>
       <h4>Respostas incorretas</h4>
       <div>
-        <input type="text" id="resposta-incorreta-1" name="resposta-incorreta" placeholder="Resposta incorreta 1">
-        <input type="text" class="url" id="url-img-1" name="url-img" placeholder="URL da imagem 1">
+        <input autocomplete="on" type="text" id="resposta-incorreta-1" name="resposta-incorreta" placeholder="Resposta incorreta 1">
+        <input autocomplete="on" type="text" class="url" id="url-img-1" name="url-img" placeholder="URL da imagem 1">
      </div>
      <div>
-        <input type="text" id="resposta-incorreta-2" name="resposta-incorreta" placeholder="Resposta incorreta 2">
-        <input type="text" class="url" id="url-img-2" name="url-img" placeholder="URL da imagem 2">
+        <input autocomplete="on" type="text" id="resposta-incorreta-2" name="resposta-incorreta" placeholder="Resposta incorreta 2">
+        <input autocomplete="on" type="text" class="url" id="url-img-2" name="url-img" placeholder="URL da imagem 2">
      </div>
      <div>
-        <input type="text" id="resposta-incorreta-3" name="resposta-incorreta" placeholder="Resposta incorreta 3">
-        <input type="text" class="url" id="url-img-3" name="url-img" placeholder="URL da imagem 3">
+        <input autocomplete="on" type="text" id="resposta-incorreta-3" name="resposta-incorreta" placeholder="Resposta incorreta 3">
+        <input autocomplete="on" type="text" class="url" id="url-img-3" name="url-img" placeholder="URL da imagem 3">
      </div>`);
 }
 function armazenarQuestoesQuizz(elementosPerguntas,elementosrRepostasCertas,elementosUrlCorretas){
@@ -485,7 +481,6 @@ function armazenarQuestoesQuizz(elementosPerguntas,elementosrRepostasCertas,elem
             isCorrectAnswer: null
         }
         respostas.push(Object.assign(novoObjresposta,resposta));
-        console.log(respostas);
         respostas[contador].text=textosRespostasCertas[i];
         respostas[contador].image=urlRespostasCorretas[i];
         respostas[contador].isCorrectAnswer=true;
@@ -513,15 +508,86 @@ function armazenarQuestoesQuizz(elementosPerguntas,elementosrRepostasCertas,elem
         respostas=[];
         contador=0;
     }
-    
-    console.log(questoes);
     quizzUsuario.questions=questoes;
-    console.log(quizzUsuario);
 }
 function criarNiveis(){
-    document.querySelector(".tela-de-gerar-perguntas").classList.add(".escondido");
-    //FALTA ARMAZENAR OS DADOS DAS PERGUNTAS NO OBJETO CORRETO;
-    //document.querySelector(".tela-de-gerar-perguntas").innerHTML="";
+    document.querySelector(".tela-de-gerar-perguntas").innerHTML="";
+    document.querySelector(".tela-de-gerar-perguntas").classList.add("escondido");
+    document.querySelector(".tela-de-gerar-niveis").classList.remove("escondido");
+    document.querySelector(".tela-de-gerar-niveis").innerHTML=`
+    <h3>Agora, decida os níveis</h3>
+    <form class="forms-perguntas-niveis" id="forms-nivel-1" action="/" method="get"></form>`;
+    document.getElementById("forms-nivel-1").innerHTML=renderizarForumlarioNiveis(1);
+    for(let i=1;i<numeroDeNiveis;i++){
+        document.querySelector(".tela-de-gerar-niveis").innerHTML+=`
+        <form class="forms-clicavel" id="forms-nivel-${i+1}" onclick="expandirFormularioNiveis(this)" action="/" method="get">
+            <h4>Nivel ${i+1}</h4>
+            <ion-icon  class="icone-editar" name="create-outline"></ion-icon>
+        </form>`;
+    }
+    document.querySelector(".tela-de-gerar-niveis").innerHTML+=`<button class="finalizar-quizz" onclick="verificarNiveis()">Finalizar Quizz</button>`;
+}
+function renderizarForumlarioNiveis(numero){
+    return(`
+<h4>Nivel ${numero}</h4>
+<div>
+  <input autocomplete="on" type="text" id="texto-do-nivel-${numero}" name="texto-nivel" placeholder="Título do nível">
+  <input autocomplete="on" type="text" id="%-acerto-minima-${numero}" name="%-de-acerto" placeholder="% de acerto mínima">
+  <input autocomplete="on" type="text" id="url-nivel-${numero}" name="url-nivel" placeholder="URL da imagem do nível">
+  <textarea wrap="soft" autocomplete="on" type="text" id="descricao-nivel-${numero}" name="descricao-nivel" placeholder="Descrição do nível"cols="30" rows="10"></textarea>
+</div>`);
+}
+function expandirFormularioNiveis(elemento){
+    const id=elemento.id;
+    const numId=Number(id.replace("forms-nivel-",""));
+    document.getElementById(id).classList.remove("forms-clicavel");
+    document.getElementById(id).classList.add("forms-perguntas-niveis");
+    document.getElementById(id).innerHTML="";
+    document.getElementById(id).innerHTML=renderizarForumlarioNiveis(numId);
+    elemento.removeAttribute("onclick");
+}
+function verificarNiveis(){
+    const formsClicaveis=document.querySelector(".tela-de-gerar-niveis").querySelectorAll(".forms-clicavel");
+
+    const elementosInput=document.querySelectorAll(".tela-de-gerar-niveis input");
+    const inputsVazios=Array.from(elementosInput).filter(elemento=>elemento.value==="");
+
+    const elementosTitulosNiveis=document.querySelector(".tela-de-gerar-niveis").querySelectorAll("[name='texto-nivel']");
+    const TitulosNiveisCorretos=Array.from(elementosTitulosNiveis).map(elemento=>elemento.value).filter(elemento=>elemento.length>=10);
+
+    const elementosPorcentagensMinimas=document.querySelector(".tela-de-gerar-niveis").querySelectorAll("[name='%-de-acerto']");
+    const PorcentagensMinimas=Array.from(elementosPorcentagensMinimas).map(elemento=>elemento.value).filter(elemento=> !isNaN(Number(elemento)));
+    const PorcentagemMinimaZero=PorcentagensMinimas.filter(elemento=>Number(elemento)===0);
+
+    const elementosUrlsNiveis=document.querySelector(".tela-de-gerar-niveis").querySelectorAll("[name='url-nivel']");
+    const urlsNiveisValidos=Array.from(elementosUrlsNiveis).map(elemento=>elemento.value).filter(isValidURL).filter(isImgLink);
+
+    const elementosDescricoesNiveis=document.querySelector(".tela-de-gerar-niveis").querySelectorAll("[name='descricao-nivel']");
+    const textsAreas=Array.from(elementosDescricoesNiveis).map(elemento=>elemento.value).filter(elemento=>elemento.length>=30);
+
+    if(formsClicaveis.length!==0){
+        return alert("Preencha todas as perguntas disponíveis!");
+    }
+    if(inputsVazios.length!==0){
+        return alert("Preenche todos os campos de input disponíveis!");
+    }
+    if(TitulosNiveisCorretos.length!==elementosTitulosNiveis.length){
+        return alert("Título inválido! Digite um título do nível com no mínimo 10 caracteres");
+    }
+    if(PorcentagensMinimas.length!==elementosPorcentagensMinimas.length){
+        return alert("Porcentagem de acerto inválida! Digite um número de 0 a 100");
+    }
+    if(PorcentagemMinimaZero.length===0){
+        return alert("Porcentagem de acerto inválida! Digite pelo menos uma porcentagem igual a 0%");
+    }
+    if(elementosUrlsNiveis.length!==urlsNiveisValidos.length){
+        return alert("URL inserida é inválida! Preencha uma URL de uma imagem válida!");
+    }
+
+    if(elementosDescricoesNiveis.length!==textsAreas.length){
+        return alert("Descrição do nível inválida! Digite uma descrição com no mínimo 30 caracteres");
+    }
+    
 }
 function EnviarQuizzesParaOServidor(){
     let variavelQueEnviaParaoServidor = {

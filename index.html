@@ -34,15 +34,16 @@
     <main class = "tela-de-criar-quizz escondido">
         <h3>Comece pelo começo</h3>
         <form class="comece-pelo-comeco" action="/" method="get">
-          <input type="text" id="titulo" name="titulo" placeholder="Título do seu quizz" required>
-          <input type="text" id="url" name="url" placeholder="URL da imagem do seu quizz" required>
-          <input type="text" id="perguntas" name="perguntas" placeholder="Quantidade de perguntas do quizz"> 
-          <input type="text" id="niveisquizz" name="niveis" placeholder="Quantidade de níveis do quizz"> 
+          <input autocomplete="on" type="text" id="titulo" name="titulo" placeholder="Título do seu quizz" required>
+          <input autocomplete="on" type="text" id="url" name="url" placeholder="URL da imagem do seu quizz" required>
+          <input autocomplete="on" type="text" id="perguntas" name="perguntas" placeholder="Quantidade de perguntas do quizz"> 
+          <input autocomplete="on" type="text" id="niveisquizz" name="niveis" placeholder="Quantidade de níveis do quizz"> 
         </form>
         <button class="criar-perguntas" onclick="verificarDadosIniciais()">Prosseguir pra criar perguntas</button>
     </main>
     <main class="tela-de-gerar-perguntas escondido"></main>
-    <main class="tela-quiz escondido" ></main>
+    <main class="tela-de-gerar-niveis escondido"></main>
+    <main class="tela-quiz escondido"></main>
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
