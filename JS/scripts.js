@@ -120,6 +120,7 @@ function renderizarQuizzes(resposta){
     let quizzesDoUsuario=[];
     // let idsTodosQuizzes=todosQuizzes.map(elemento=>elemento.id);
     let idsDeserializados=[];
+    console.log(verificarIdSalvos());
     if(verificarIdSalvos()){
         idsDeserializados=JSON.parse(localStorage.getItem("idsSalvos"));
         for (let i=0;i<idsDeserializados.length;i++){
@@ -152,7 +153,7 @@ function renderizarQuizzes(resposta){
             </div>`
         }
     }else{
-        document.querySelector(".tela-inicial>.quizzes-usuarios").innerHTML=
+        document.getElementById("quizzes-usuarios").innerHTML=
         `<div class="quizzes-em-branco">
         <h3>Você não criou nenhum quizz ainda :(</h3>
         <button onclick="criarQuizz()"><h2>Criar quizz</h2></button>
