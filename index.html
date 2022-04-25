@@ -17,10 +17,7 @@
         <h1 onclick="recarregarPagina()">BuzzQuizz</h1>
     </header>
     <main class="tela-inicial">
-        <div class="quizzes-em-branco">
-            <h3>Você não criou nenhum quizz ainda :(</h3>
-            <buton onclick="criarQuizz()"><h2>Criar quizz</h2></buton>
-        </div>
+        <div id="quizzes-usuarios"></div>
         <div class="todos-os-quizzes">
             <h3>Todos os quizzes</h3>
             <div class="quizzes">
@@ -43,6 +40,8 @@
     </main>
     <main class="tela-de-gerar-perguntas escondido"></main>
     <main class="tela-de-gerar-niveis escondido"></main>
+    <main class="tela-de-sucesso-quizz escondido">
+    </main>
     <main class="tela-quiz escondido"></main>
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
@@ -51,3 +50,5 @@
     <script src="/JS/scripts.js"></script>
 </body>
 </html>
+
+

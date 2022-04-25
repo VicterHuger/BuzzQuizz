@@ -2,6 +2,22 @@
 *{
     box-sizing: border-box;
 }
+p,h1-h6,span{
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
 body{
     display: flex;
     flex-direction: column;
@@ -29,7 +45,7 @@ body>header:first-child>h1{
     font-weight: 700;
     color:#FFFFFF;
 }
-body>header:first-child>h1:hover,.quizzes-em-branco>buton:hover,.quizz:hover,button:hover,ion-icon:hover,.forms-clicavel:hover{
+body>header:first-child>h1:hover,.quizzes-em-branco>button:hover,.quizz:hover,button:hover,ion-icon:hover,.forms-clicavel:hover{
     cursor:pointer;
     filter: brightness(1.5);
     transform: translateY(2px);
@@ -51,6 +67,7 @@ body>header:first-child>h1:hover,.quizzes-em-branco>buton:hover,.quizz:hover,but
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    margin-bottom: 112px;
 }
 .quizzes-em-branco>h3{
     color:#B9B9B9;
@@ -59,12 +76,12 @@ body>header:first-child>h1:hover,.quizzes-em-branco>buton:hover,.quizz:hover,but
     inline-size: 25%;
     text-align: center;
 }
-.quizzes-em-branco>buton>h2{
+.quizzes-em-branco>button>h2{
     color:#EC362D;
     font-size: 21px;
     text-align:center ;
 }
-.quizzes-em-branco>buton{
+.quizzes-em-branco>button{
     background: #FAFAFA;
     border: 1px dashed #EC362D;
     border-radius: 50px;
@@ -74,10 +91,34 @@ body>header:first-child>h1:hover,.quizzes-em-branco>buton:hover,.quizz:hover,but
     justify-content: center;
     align-items: center;
 }
+.cabeçalho-seus-quizzes{
+    margin:0 auto 13px auto;
+    width:100%;
+    display: flex;
+    align-items: center;
+}
+.cabeçalho-seus-quizzes>h4{
+    font-size: 20px;
+    font-weight: 700;
+    margin-right: 17px;
+}
+.cabeçalho-seus-quizzes>ion-icon{
+    font-size: 25px;
+    align-items: center;
+    color:#EC362D;
+}
+.quizzes-usuarios-div{
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    margin-bottom: 48px;
+}
+.quizzes-usuarios-div .quizz{
+    margin-right:1.5%;
+}
 .todos-os-quizzes{
     display: flex;
     flex-direction: column;  
-    margin-top: 77px;
 }
 .todos-os-quizzes>h3{
     font-size: 20px;
@@ -108,7 +149,7 @@ body>header:first-child>h1:hover,.quizzes-em-branco>buton:hover,.quizz:hover,but
     position: absolute;
     top:0;
     left:0;
-    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%);
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, rgba(0,0,0,0.8) 100%);
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 .efeito-gradiente>h3{
@@ -287,6 +328,8 @@ opcao>span:first-child, opcao>span:nth-child(2){
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: none;
+    border-radius: 15px;
 }
 .tela-de-criar-quizz{
     margin-top: 69px;
@@ -341,7 +384,7 @@ input::placeholder, textarea::placeholder{
     font-size: 21px;
     text-align: center; 
 }
-.tela-de-gerar-perguntas,.tela-de-gerar-niveis{
+.tela-de-gerar-perguntas,.tela-de-gerar-niveis,.tela-de-sucesso-quizz{
     width: 100%;
     margin: 69px auto;
     display: flex;
@@ -465,6 +508,69 @@ textarea{
     width: 23%;
     height: 54px;
 }
+.tela-de-sucesso-quizz>h3{
+    margin: 71px auto 46px auto;
+    font-size: 23px;
+    font-weight: 700;
+    color: #000000;
+    text-align: center;
+}
+.finalizacao-quizz-usuario{
+    width: 35%;
+    margin: 0 auto 45px auto;
+    height: 266px;
+    position: relative;
+}
+.efeito-gradiente-sucesso-quizz{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    left:0;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, rgba(0,0,0,0.8) 100%);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+.finalizacao-quizz-usuario .efeito-gradiente-sucesso-quizz>h3{
+    font-size: 23px;
+    color:#FFFFFF;
+    text-align: left;
+    position: absolute;
+    width: 100%;
+    padding: 0 5%; /*18px/340px*/
+    bottom: 11px;
+    left:0;
+    vertical-align: center;
+ }
+ .acessar-quizz{
+    width: 15%;
+    height: 44px;
+    border-radius: 15px;
+    background-color: #EC362D;
+    color:#FFF5F4;
+    font-size: 21px;
+    text-align: center;
+    margin: 0 auto 9px auto;
+ }
+ .voltar-home-sucesso-quiz{
+    text-align: center;
+    border: none;
+    width: 15%;
+    height: 44px;
+    font-size: 21px;
+    color: #818181; 
+    margin: 0 auto; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: none;
+    border-radius: 15px;
+}
+.finalizacao-quizz-usuario img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 
 @media (max-width:1100px){
     .tela-inicial{
@@ -474,7 +580,7 @@ textarea{
     .quizzes-em-branco>h3{
         inline-size: 75%;
     }
-    .quizzes-em-branco>buton{
+    .quizzes-em-branco>button{
         width: 44%;/*151px/340px*/
     }
     .todos-os-quizzes{  
@@ -542,7 +648,7 @@ textarea{
         width: 91%;
         height: fit-content;
         flex-direction: column;
-        margin:0 auto;
+        margin:0 auto;  
     }
     .quiz-results>div>img{
         height: 255px;
@@ -553,6 +659,7 @@ textarea{
         width: 100%;
         font-size: 17px;
         margin:0 auto 14px auto;
+    
     }
     .refazer-quizz{
         width: 59%;
@@ -567,6 +674,7 @@ textarea{
         font-size: 18px;
         color: #818181; 
         margin: 0 auto; 
+        background-color: none;
     }
     .tela-de-criar-quizz>h3{
         margin:37px auto 29px auto;

@@ -2,6 +2,7 @@
 const APPI_URL = "https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes";
 const paginaQuizz = document.querySelector(".tela-quiz");
 let dadosQuizz;
+let ID_QUIZZ_USUARIO;
 let quizzesDisponiveis=[];
 const InformacaoDoQuiz = {
     questionsAnswered: 0,
@@ -11,83 +12,74 @@ let numDePerguntas;
 let numeroDeNiveis;
 let numRespostasIncorretasPreenchidas=[];
 const quizzUsuario={
-	title: "Título do quizz",
-	image: "https://http.cat/411.jpg",
+	title: "",
+	image: "",
 	questions: [
 		{
-			title: "Título da pergunta 1",
-			color: "#123456",
+			title: "",
+			color: "",
 			answers: [
 				{
-					text: "Texto da resposta 1",
-					image: "https://http.cat/411.jpg",
-					isCorrectAnswer: true
+					text: "",
+					image: "",
+					isCorrectAnswer: null
 				},
 				{
-					text: "Texto da resposta 2",
-					image: "https://http.cat/412.jpg",
-					isCorrectAnswer: false
+					text: "",
+					image: "",
+					isCorrectAnswer: null
 				}
 			]
 		},
 		{
-			title: "Título da pergunta 2",
-			color: "#123456",
+			title: "",
+			color: "",
 			answers: [
 				{
-					text: "Texto da resposta 1",
-					image: "https://http.cat/411.jpg",
-					isCorrectAnswer: true
+					text: "",
+					image: "",
+					isCorrectAnswer: null
 				},
 				{
-					text: "Texto da resposta 2",
-					image: "https://http.cat/412.jpg",
-					isCorrectAnswer: false
+					text: "",
+					image: "",
+					isCorrectAnswer: null
 				}
 			]
 		},
 		{
-			title: "Título da pergunta 3",
-			color: "#123456",
+			title: "",
+			color: "",
 			answers: [
 				{
-					text: "Texto da resposta 1",
-					image: "https://http.cat/411.jpg",
-					isCorrectAnswer: true
+					text: "",
+					image: "",
+					isCorrectAnswer: null
 				},
 				{
-					text: "Texto da resposta 2",
-					image: "https://http.cat/412.jpg",
-					isCorrectAnswer: false
+					text: "",
+					image: "",
+					isCorrectAnswer: null
 				}
 			]
 		}
 	],
 	levels: [
 		{
-			title: "Título do nível 1",
-			image: "https://http.cat/411.jpg",
-			text: "Descrição do nível 1",
+			title: "",
+			image: "",
+			text: "",
 			minValue: 0
 		},
 		{
-			title: "Título do nível 2",
-			image: "https://http.cat/412.jpg",
-			text: "Descrição do nível 2",
-			minValue: 50
+			title: "",
+			image: "",
+			text: "",
+			minValue: 0
 		}
 	]
 }
-//const JogarNovoQuizz = document.querySelector(".pagina_quizz");
-//const CriarNovoQuizz = document.querySelector(".criar_novo_quizz");
 //const CarregandoQuizzes = document.querySelector(".carregar-pagina");
-/*const quizzesValidos = {
-    id:"",
-    title: "", 
-    image: "", 
-    questions: [],
-    levels: []
-}*/
 //CHAMANDO FUNÇÃO
 carregarTodosQuizzes();
 
@@ -123,16 +115,61 @@ function renderizarQuizzes(resposta){
     qntQuizzes=quizzesDisponiveis[0].length;
     const elementoQuizzes=document.querySelector(".quizzes");
     elementoQuizzes.innerHTML=``;
-    for (let i=0;i<qntQuizzes;i++){
-        elementoQuizzes.innerHTML+=
-        `<div class="quizz" id="${quizzesDisponiveis[0][i].id}" onclick="abrirPaginaQuizz(this)">
-            <img src="${quizzesDisponiveis[0][i].image}" alt="Imagem ilustrativa do quizz">
-            <div class="efeito-gradiente">
-                <h3>${quizzesDisponiveis[0][i].title}</h3>
-            </div>
-        </div>`
+    let quizzesDaApi=quizzesDisponiveis[0];
+    let quizzesDisponiveisNaoUsuario=quizzesDisponiveis[0];
+    let quizzesDoUsuario=[];
+    // let idsTodosQuizzes=todosQuizzes.map(elemento=>elemento.id);
+    let idsDeserializados=[];
+    if(verificarIdSalvos()){
+        idsDeserializados=JSON.parse(localStorage.getItem("idsSalvos"));
+        for (let i=0;i<idsDeserializados.length;i++){
+            // idsTodosQuizzes=idsTodosQuizzes.filter(elemento=>elemento!==idsDeserializados[i]);
+            quizzesDaApi=quizzesDaApi.filter(elemento=>elemento.id!==idsDeserializados[i]);
+            quizzesDoUsuario[i]=(quizzesDisponiveisNaoUsuario.filter(elemento=>elemento.id===idsDeserializados[i]));
+        }
+        document.getElementById("quizzes-usuarios").innerHTML=
+        `<div class="cabeçalho-seus-quizzes">
+        <h4>Seus Quizzes</h4>
+        <ion-icon name="add-circle" onclick="criarQuizz()"></ion-icon>
+        </div>`;
+        document.getElementById("quizzes-usuarios").innerHTML+=`<div class="quizzes-usuarios-div"></div>`;
+        for(let i=0;i<quizzesDoUsuario.length;i++){
+            document.querySelector(".quizzes-usuarios-div").innerHTML+=
+                `<div class="quizz" id="${quizzesDoUsuario[i][0].id}" onclick="abrirPaginaQuizz(this)">
+                    <img src="${quizzesDoUsuario[i][0].image}" alt="Imagem ilustrativa do quizz">
+                    <div class="efeito-gradiente">
+                        <h3>${quizzesDoUsuario[i][0].title}</h3>
+                    </div>
+                </div>`
+        }
+        for (let j=0;j<quizzesDaApi.length;j++){
+            elementoQuizzes.innerHTML+=
+            `<div class="quizz" id="${quizzesDaApi[j].id}" onclick="abrirPaginaQuizz(this)">
+                <img src="${quizzesDaApi[j].image}" alt="Imagem ilustrativa do quizz">
+                <div class="efeito-gradiente">
+                    <h3>${quizzesDaApi[j].title}</h3>
+                </div>
+            </div>`
+        }
+    }else{
+        document.querySelector(".tela-inicial>.quizzes-usuarios").innerHTML=
+        `<div class="quizzes-em-branco">
+        <h3>Você não criou nenhum quizz ainda :(</h3>
+        <button onclick="criarQuizz()"><h2>Criar quizz</h2></button>
+        </div>`;
+        for (let i=0;i<qntQuizzes;i++){
+            elementoQuizzes.innerHTML+=
+            `<div class="quizz" id="${quizzesDisponiveis[0][i].id}" onclick="abrirPaginaQuizz(this)">
+                <img src="${quizzesDisponiveis[0][i].image}" alt="Imagem ilustrativa do quizz">
+                <div class="efeito-gradiente">
+                    <h3>${quizzesDisponiveis[0][i].title}</h3>
+                </div>
+            </div>`
+        }
+    
     }
 }
+
 function tratarErroCarregarQuizzes(erro){
     alert(`Erro ao carregar os quizzes existentes: Erro número ${erro.response.status}`);
     recarregarPagina();
@@ -158,6 +195,7 @@ function embaralha() {
     return Math.random() -0.5;
 }
 function exibirQuizz (quizz){
+    dadosQuizz=quizz;
     title= quizz.title;
     bannersrc = quizz.image;
     const telaQuiz=document.querySelector(".tela-quiz");
@@ -240,10 +278,11 @@ function zerarQuizz (){
 function mostrarResultado(){
      const score = Math.round((InformacaoDoQuiz.rightAnswers/InformacaoDoQuiz.questionsAnswered)*100);
      let level = 0;
-
+     let scoreMaximoObtido=0;
     for (let i = 0; i< dadosQuizz.levels.length; i++){
-        if(score >= dadosQuizz.levels[i].minValue){
-            level = i;
+        if(score >= dadosQuizz.levels[i].minValue && dadosQuizz.levels[i].minValue>=scoreMaximoObtido){
+            level=i;
+            scoreMaximoObtido=dadosQuizz.levels[i].minValue;
         }
      }
     paginaQuizz.innerHTML+=
@@ -255,8 +294,8 @@ function mostrarResultado(){
                 <p>${dadosQuizz.levels[level].text}</p>
             </div>
         </section>
-        <buton class = "refazer-quizz" onclick ="zerarQuizz()">Reiniciar Quizz</buton>
-        <buton class = "voltar-home" onclick = "recarregarPagina()">Voltar pra home</buton>
+        <button class = "refazer-quizz" onclick ="zerarQuizz()">Reiniciar Quizz</button>
+        <button class = "voltar-home" onclick = "recarregarPagina()">Voltar pra home</button>
     </div>`
         ;
     setTimeout(function (){
@@ -583,59 +622,107 @@ function verificarNiveis(){
     if(elementosUrlsNiveis.length!==urlsNiveisValidos.length){
         return alert("URL inserida é inválida! Preencha uma URL de uma imagem válida!");
     }
-
     if(elementosDescricoesNiveis.length!==textsAreas.length){
         return alert("Descrição do nível inválida! Digite uma descrição com no mínimo 30 caracteres");
     }
-    
+    armazenarNiveisQuizz(TitulosNiveisCorretos,urlsNiveisValidos,PorcentagensMinimas,textsAreas);
 }
-function EnviarQuizzesParaOServidor(){
-    let variavelQueEnviaParaoServidor = {
-        title: document.querySelector(".titulo").value,
-        image: document.querySelector(".url-image").value,
-        questions: questions,
-        levels: levels
-
+function armazenarNiveisQuizz(titulos,urls,stringNumbers,textos){
+    let nivel={
+        title:"",
+        image:"",
+        text:"",
+        minValue:0
+    };
+    let novoObjnivel={
+        title:"",
+        image:"",
+        text:"",
+        minValue:0
     }
-     let promessaDeEnviarAoServidor = axios.post('https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes', variavelQueEnviaParaoServidor)
-     promessaDeEnviarAoServidor.then(PaginaFinal)//aqui chama a página do quiz final 
-     promessaDeEnviarAoServidor.cath(MostrarErroAoEnviar) // aqui mostra a fução de erro 
+    const niveis=[];
+    for(let i=0;i<numeroDeNiveis;i++){
+        novoObjnivel={
+            title:"",
+            image:"",
+            text:"",
+            minValue:0
+        }
+        niveis.push(Object.assign(novoObjnivel,nivel));
+        niveis[i].title=titulos[i];
+        niveis[i].image=urls[i];
+        niveis[i].text=textos[i];
+        niveis[i].minValue=Number(stringNumbers[i]);
+    }
+    quizzUsuario.levels=niveis;
+    enviarQuizzParaAPI();
 }
 
-function MostrarErroAoEnviar (resposta){
-    console.log("Houve um erro ao enviar", resposta)
+function enviarQuizzParaAPI(){
+    const promise = axios.post(APPI_URL, quizzUsuario);
+    promise.then(renderizarPaginaSucessoQuizz);
+    promise.catch(tratarErroEnvioQuizz);
+}
+
+function tratarErroEnvioQuizz (erro){
+    alert("Erro ao enviar o quizz para o servidor: ", erro.response.data)
+}
+function renderizarPaginaSucessoQuizz(resposta){
+    ID_QUIZZ_USUARIO=resposta.data.id;
+    salvarIdNoNavegador(ID_QUIZZ_USUARIO);
+    document.querySelector(".tela-de-gerar-niveis").classList.add("escondido");
+    document.querySelector(".tela-de-sucesso-quizz").classList.remove("escondido");
+    document.querySelector(".tela-de-sucesso-quizz").innerHTML=
+    `<h3>Seu quizz está pronto!</h3>
+    <div class="finalizacao-quizz-usuario">
+        <img src="${quizzUsuario.image}" alt="Imagem ilustrativa do quizz">
+        <div class="efeito-gradiente-sucesso-quizz">
+            <h3>${quizzUsuario.title}</h3>
+        </div>
+    </div>
+    <button class = "acessar-quizz" onclick ="abrirQuizzUsuario()">Reiniciar Quizz</button>
+    <button class = "voltar-home-sucesso-quiz" onclick = "recarregarPagina()">Voltar pra home</button>`;
+}
+function abrirQuizzUsuario(){
+    document.querySelector(".tela-de-sucesso-quizz").classList.add("escondido");
+    document.querySelector(".tela-quiz").classList.remove("escondido");
+    document.querySelector("header").scrollIntoView();
+    exibirQuizz(quizzUsuario);
+}
+function salvarIdNoNavegador (id){
+    let idsDeserializados=[];
+    let idsSerializados=[];
+    if(verificarIdSalvos()){
+        idsDeserializados=JSON.parse(localStorage.getItem("idsSalvos"));
+        idsDeserializados.push(id);
+        idsSerializados=JSON.stringify(idsDeserializados);
+        localStorage.setItem("idsSalvos",idsSerializados);
+    }else{
+        idsDeserializados.push(id);
+        idsSerializados=JSON.stringify(idsDeserializados);
+        localStorage.setItem("idsSalvos",idsSerializados);
+    }
 }
 
 function verificarIdSalvos(){
-    arrayDeIds = localStorage.getItem("idSalvo")
-
-    if (arrayDeIds == null){
-        arrayDeIds = "[]";
+    const idsSerializados= localStorage.getItem("idsSalvos");
+    const idsDeserializados=JSON.parse(idsSerializados);
+    if (Boolean(idsDeserializados)){
+        return true;
     }
-    arrayDeIds = JSON.parse(arrayDeIds)
-
-    if (arrayDeIds.length > 0 ){
-        document.querySelector(".telaParaCriaroQuiz").classList("escondido");
-        BuscarQuizzdoUsuario();
-    }
-    else {
-        document.querySelector("tela2paraCriaroQuiz").classList.add("escondido");
-    }
+    return false;
+    // if (ids.length > 0 ){
+    //     document.querySelector(".telaParaCriaroQuiz").classList("escondido");
+    //     BuscarQuizzdoUsuario();
+    // }
+    // else {
+    //     document.querySelector("tela2paraCriaroQuiz").classList.add("escondido");
+    // }
 }
-
-function salvarNoNavegador (okRecebiOID){
-    let variaveldoID = 0;
-    variavedoID = okRecebiOID
-
-    arrayDeIds.push(variaveldoID)
-
-    localStorage.setItem("idSalvo", arrayDeIds);
-}
-
-function BuscarQuizzdoUsuario (){
-    for(let i=0; i<arrayDeIds.length; i++){
-        let promessaDeBuscaDeQuizzPeloIdsDoUsuario = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes${arrayDeIds[i]}`)
-        promessaDeBuscaDeQuizzPeloIdsDoUsuario.then(renderizarQuizzesDoUsuario)
+function BuscarQuizzdoUsuario (ids){
+    for(let i=0; i<ids.length; i++){
+        const promise = axios.get(`${APPI_URL}/${ids[i]}`)
+        promise.then(renderizarQuizzesDoUsuario)
     }
 }
 /*
