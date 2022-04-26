@@ -115,7 +115,7 @@ function carregarTodosQuizzes(){
 function renderizarQuizzes(resposta){
     quizzesDisponiveis=[resposta.data];
     console.log(quizzesDisponiveis);
-    qntQuizzes=quizzesDisponiveis[0].length;
+    let qntQuizzes=quizzesDisponiveis[0].length;
     console.log(quizzesDisponiveis[0][1])
     console.log(qntQuizzes)
     const elementoQuizzes=document.querySelector(".quizzes");
@@ -147,14 +147,14 @@ function renderizarQuizzes(resposta){
         <ion-icon name="add-circle" onclick="criarQuizz()"></ion-icon>
         </div>`;
         document.getElementById("quizzes-usuarios").innerHTML+=`<div class="quizzes-usuarios-div"></div>`;
-        console.log("quizzes do usuiro", quizzesDoUsuario[0])
+        //console.log("quizzes do usuiro", quizzesDoUsuario[0])
         for(let i=0;i<quizzesDoUsuario.length;i++){
             console.log(`${i+1}-quizz`,quizzesDoUsuario[i][0]);
             document.querySelector(".quizzes-usuarios-div").innerHTML+=
-                `<div class="quizz" id="${idsDeserializados[i]}" onclick="abrirPaginaQuizz(this)">
-                    <img src="${quizzesDoUsuario[i].image}" alt="Imagem ilustrativa do quizz">
+                `<div class="quizz" id="${idsDeserializados[i][0]}" onclick="abrirPaginaQuizz(this)">
+                    <img src="${quizzesDoUsuario[i][0].image}" alt="Imagem ilustrativa do quizz">
                     <div class="efeito-gradiente">
-                        <h3>${quizzesDoUsuario[i].title}</h3>
+                        <h3>${quizzesDoUsuario[i][0].title}</h3>
                     </div>
                 </div>`
         }
