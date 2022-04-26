@@ -4,6 +4,8 @@ const paginaQuizz = document.querySelector(".tela-quiz");
 let dadosQuizz;
 let ID_QUIZZ_USUARIO;
 let quizzesDisponiveis=[];
+let quizzesDoUsuario=[];
+let idsDeserializados=[];
 const InformacaoDoQuiz = {
     questionsAnswered: 0,
     rightAnswers: 0
@@ -112,34 +114,47 @@ function carregarTodosQuizzes(){
 }
 function renderizarQuizzes(resposta){
     quizzesDisponiveis=[resposta.data];
+    console.log(quizzesDisponiveis);
     qntQuizzes=quizzesDisponiveis[0].length;
+    console.log(quizzesDisponiveis[0][1])
+    console.log(qntQuizzes)
     const elementoQuizzes=document.querySelector(".quizzes");
     elementoQuizzes.innerHTML=``;
     let quizzesDaApi=quizzesDisponiveis[0];
     let quizzesDisponiveisNaoUsuario=quizzesDisponiveis[0];
-    let quizzesDoUsuario=[];
+    quizzesDoUsuario=[];
     // let idsTodosQuizzes=todosQuizzes.map(elemento=>elemento.id);
-    let idsDeserializados=[];
-    console.log(verificarIdSalvos());
+    idsDeserializados=[];
+    let quizzesDeserializados=[];
     if(verificarIdSalvos()){
         idsDeserializados=JSON.parse(localStorage.getItem("idsSalvos"));
+        console.log(idsDeserializados);
         for (let i=0;i<idsDeserializados.length;i++){
             // idsTodosQuizzes=idsTodosQuizzes.filter(elemento=>elemento!==idsDeserializados[i]);
             quizzesDaApi=quizzesDaApi.filter(elemento=>elemento.id!==idsDeserializados[i]);
             quizzesDoUsuario[i]=(quizzesDisponiveisNaoUsuario.filter(elemento=>elemento.id===idsDeserializados[i]));
+        
+            if(quizzesDoUsuario[i].length===0){
+                quizzesDeserializados=JSON.parse(localStorage.getItem("quizzsSalvos"));
+                quizzesDoUsuario[i]=quizzesDeserializados[i];
+                
+            }
         }
+        console.log(quizzesDoUsuario);
         document.getElementById("quizzes-usuarios").innerHTML=
         `<div class="cabeçalho-seus-quizzes">
         <h4>Seus Quizzes</h4>
         <ion-icon name="add-circle" onclick="criarQuizz()"></ion-icon>
         </div>`;
         document.getElementById("quizzes-usuarios").innerHTML+=`<div class="quizzes-usuarios-div"></div>`;
+        console.log("quizzes do usuiro", quizzesDoUsuario[0])
         for(let i=0;i<quizzesDoUsuario.length;i++){
+            console.log(`${i+1}-quizz`,quizzesDoUsuario[i][0]);
             document.querySelector(".quizzes-usuarios-div").innerHTML+=
-                `<div class="quizz" id="${quizzesDoUsuario[i][0].id}" onclick="abrirPaginaQuizz(this)">
-                    <img src="${quizzesDoUsuario[i][0].image}" alt="Imagem ilustrativa do quizz">
+                `<div class="quizz" id="${idsDeserializados[i]}" onclick="abrirPaginaQuizz(this)">
+                    <img src="${quizzesDoUsuario[i].image}" alt="Imagem ilustrativa do quizz">
                     <div class="efeito-gradiente">
-                        <h3>${quizzesDoUsuario[i][0].title}</h3>
+                        <h3>${quizzesDoUsuario[i].title}</h3>
                     </div>
                 </div>`
         }
@@ -167,24 +182,45 @@ function renderizarQuizzes(resposta){
                 </div>
             </div>`
         }
-    
     }
 }
-
 function tratarErroCarregarQuizzes(erro){
     alert(`Erro ao carregar os quizzes existentes: Erro número ${erro.response.status}`);
     recarregarPagina();
 }
 function abrirPaginaQuizz(elemento){
-    const ID_DO_QUIZZ=elemento.id;
+    const ID_DO_QUIZZ=(elemento.id);
+
+    if(verificarIdSalvos()){
+        quizzesDeserializados=JSON.parse(localStorage.getItem("quizzsSalvos"));
+        console.log(quizzesDeserializados);
+        let quizElementoClicado;
+        let idNumerico=Number(ID_DO_QUIZZ);
+        for (let i=0;i<idsDeserializados.length;i++){
+            console.log(idsDeserializados[i]);
+            if(idsDeserializados[i]===idNumerico){ 
+                quizElementoClicado=quizzesDeserializados[i];
+                console.log(quizElementoClicado);
+                habilitarQuizz();
+                return exibirQuizz(quizElementoClicado);
+            }
+        }
+        
+        console.log(quizElementoClicado);
+        
+    }
     const promise=axios.get(`${APPI_URL}/${ID_DO_QUIZZ}`);
     promise.then(renderizarQuizz);
     promise.catch(tratarErroAbrirQuizz);
 }
-function renderizarQuizz(resposta){
+function habilitarQuizz(){
     document.querySelector(".tela-inicial").classList.add("escondido");
     document.querySelector(".tela-quiz").classList.remove("escondido");
     document.querySelector("header").scrollIntoView();
+}
+function renderizarQuizz(resposta){
+    habilitarQuizz();
+    console.log(resposta.data);
     dadosQuizz = resposta.data;
     exibirQuizz(resposta.data);
 }
@@ -197,6 +233,7 @@ function embaralha() {
 }
 function exibirQuizz (quizz){
     dadosQuizz=quizz;
+    console.log("esse é o quiz", quizz)
     title= quizz.title;
     bannersrc = quizz.image;
     const telaQuiz=document.querySelector(".tela-quiz");
@@ -606,7 +643,7 @@ function verificarNiveis(){
     const textsAreas=Array.from(elementosDescricoesNiveis).map(elemento=>elemento.value).filter(elemento=>elemento.length>=30);
 
     if(formsClicaveis.length!==0){
-        return alert("Preencha todas as perguntas disponíveis!");
+        return alert("Preencha todos os niveis disponíveis!");
     }
     if(inputsVazios.length!==0){
         return alert("Preenche todos os campos de input disponíveis!");
@@ -671,6 +708,7 @@ function tratarErroEnvioQuizz (erro){
 function renderizarPaginaSucessoQuizz(resposta){
     ID_QUIZZ_USUARIO=resposta.data.id;
     salvarIdNoNavegador(ID_QUIZZ_USUARIO);
+    salvarQuizzNoNavegador(quizzUsuario);
     document.querySelector(".tela-de-gerar-niveis").classList.add("escondido");
     document.querySelector(".tela-de-sucesso-quizz").classList.remove("escondido");
     document.querySelector(".tela-de-sucesso-quizz").innerHTML=
@@ -691,7 +729,7 @@ function abrirQuizzUsuario(){
     exibirQuizz(quizzUsuario);
 }
 function salvarIdNoNavegador (id){
-    let idsDeserializados=[];
+    idsDeserializados=[];
     let idsSerializados=[];
     if(verificarIdSalvos()){
         idsDeserializados=JSON.parse(localStorage.getItem("idsSalvos"));
@@ -704,70 +742,104 @@ function salvarIdNoNavegador (id){
         localStorage.setItem("idsSalvos",idsSerializados);
     }
 }
+function salvarQuizzNoNavegador (quizz){
+    let quizzsDeserializados=[];
+    let quizzsSerializados=[];
+    if(verificarQuizzSalvos()){
+        console.log("ENTREI");
+        quizzsDeserializados=JSON.parse(localStorage.getItem("quizzsSalvos"));
+        quizzsDeserializados.push(quizz);
+        quizzsSerializados=JSON.stringify(quizzsDeserializados);
+        localStorage.setItem("quizzsSalvos",quizzsSerializados);
+    }else{
+        quizzsDeserializados.push(quizz);
+        quizzsSerializados=JSON.stringify(quizzsDeserializados);
+        localStorage.setItem("quizzsSalvos",quizzsSerializados);
+    }
+}
+
 
 function verificarIdSalvos(){
     const idsSerializados= localStorage.getItem("idsSalvos");
     const idsDeserializados=JSON.parse(idsSerializados);
-    if (Boolean(idsDeserializados)){
-        return true;
-    }
-    return false;
-    // if (ids.length > 0 ){
-    //     document.querySelector(".telaParaCriaroQuiz").classList("escondido");
-    //     BuscarQuizzdoUsuario();
-    // }
-    // else {
-    //     document.querySelector("tela2paraCriaroQuiz").classList.add("escondido");
-    // }
+    return Boolean(idsDeserializados);
+   
 }
-function BuscarQuizzdoUsuario (ids){
-    for(let i=0; i<ids.length; i++){
-        const promise = axios.get(`${APPI_URL}/${ids[i]}`)
-        promise.then(renderizarQuizzesDoUsuario)
-    }
+function verificarQuizzSalvos(){
+    const quizzsSerializados= localStorage.getItem("quizzsSalvos");
+    console.log(quizzsSerializados);
+    const quizzsDeserializados=JSON.parse(quizzsSerializados);
+    return (Boolean(quizzsDeserializados));
 }
-/*
-function conferirQuizzUsuário(){
-    const id = JSON.parse(localStorage.getItem("ids"));
+//salvarIdNoNavegador(1);
+// const qz=[{
 
-    const QuizzOriginal = document.querySelector(".quizzes-originais");
+//     "title": "Quizz só pra quem sabe de MAMACOS",
+//     "image": "https://sm.ign.com/ign_br/screenshot/default/naruto-shippuden_f134.png",
+//     "questions": [
+//         {
+//             "title": "asgasgsaasgasgasgasgg",
+//             "color": "#aaaaaa",
+//             "answers": [
+//                 {
+//                     "text": "afasfasfasfassfasfas",
+//                     "image": "http://127.0.0.1:5500/",
+//                     "isCorrectAnswer": true
+//                 },
+//                 {
+//                     "text": "afasfasfasfassfasfas",
+//                     "image": "http://127.0.0.1:5500/",
+//                     "isCorrectAnswer": false
+//                 }
+//             ]
+//         },
+//         {
+//             "title": "asgasgsaasgasgasgasgg",
+//             "color": "#aaaaaa",
+//             "answers": [
+//                 {
+//                     "text": "afasfasfasfassfasfas",
+//                     "image": "http://127.0.0.1:5500/",
+//                     "isCorrectAnswer": true
+//                 },
+//                 {
+//                     "text": "afasfasfasfassfasfas",
+//                     "image": "http://127.0.0.1:5500/",
+//                     "isCorrectAnswer": false
+//                 }
+//             ]
+//         },
+//         {
+//             "title": "asgasgsaasgasgasgasgg",
+//             "color": "#aaaaaa",
+//             "answers": [
+//                 {
+//                     "text": "afasfasfasfassfasfas",
+//                     "image": "http://127.0.0.1:5500/",
+//                     "isCorrectAnswer": true
+//                 },
+//                 {
+//                     "text": "afasfasfasfassfasfas",
+//                     "image": "http://127.0.0.1:5500/",
+//                     "isCorrectAnswer": false
+//                 }
+//             ]
+//         }
+//     ],
+//     "levels": [
+//         {
+//             "title": "asdasdasdasasasdasd",
+//             "image": "http://127.0.0.1:5500/",
+//             "text": "23123123123123123123123123123123131",
+//             "minValue": 0
+//         },
+//         {
+//             "title": "asdasdasdasasasdasd",
+//             "image": "http://127.0.0.1:5500/",
+//             "text": "23123123123123123123123123123123131",
+//             "minValue": 0
+//         }
+//     ]
 
-    const QuizzQueOUsuarioCriou = document.querySelector(".seus-quizzes");
-
-    if(id !== null && id.length !==0) {
-        let apenasO.ID = [];
-        ids.forEach(e => {apenasO.ID.push(ai não entendi direito.... socorro )})
-        QuizzOriginal.classList.add("escondido");
-        QuizzQueOUsuarioCriou.classList.remove("escondido");
-        QuizzQueOUsuarioCriou.querySelector(".quizzes").innerHTML = "";
-        apenasO.ID.forEach(id => getQuizz(ids, mostrarQuizzdoUsuario));
-
-        /// ai desculpa minha nomenclatura minha cabeça tá girando aqui, mas eu acho que a lógica tá mais ou menos certa, pelo que eu li no Notion //// 
-
-        
-    }
-    if(ids !== null && ids.length === 0){
-        QuizzOriginaç.classList.remove("hidden");
-        QuizzQueOUsuarioCriou.classList.add("hidden");
-} 
-
-
-function mostraQuizzdoUsuario(){
-    const seusQuizzes = document.querySelector(".seus-quizzes .quizzes")
-
-    seusQuizzes.innerHTML = `
-    <div class = "quizz">
-        <div class = "conteudo-quizz" onclick = "pegarQuizz(${response.data.id}, abrirpaginaQuizz)">
-        <img src = ${response.data.image} alt = "$(responde.data.title)">
-            <div class = "nome-do-quizz">
-                ${response.data.title}
-            </div>
-        </div>
-    </div>
-    <div class = "botao-de-editar-quizz">
-        <colocar aqui o ion icon de editar os quizz. não pensei nisso ainda, sorry >        `
-
-} 
-
-/////// ahhh e eu vi alguma coisa sobre deletar o quizz, ainda não sei ao certo como fazer, nem isso que eu escrevi eu sei se tá certo, mas pensei em alguma coisa também ////// 
-*/
+// }];
+// salvarQuizzNoNavegador (qz);
